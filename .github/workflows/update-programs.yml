@@ -1,0 +1,54 @@
+name: Update Programs Data
+
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-script-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 deep_translator
+
+      - name: Run Python script
+        # continue-on-error means the job stays green even if this step exits non-zero.
+        # The script already exits 0 on all handled failures, so this is a
+        # safety net for truly unexpected crashes (e.g. runner OOM).
+        continue-on-error: true
+        env:
+          USERNUMBER: ${{ secrets.USERNUMBER }}
+        run: python fetch_codes/fetch_programs.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ -f fetch_data/program_data.json ]; then
+            git add fetch_data/program_data.json
+
+            if git diff-index --quiet HEAD; then
+              echo "No changes in data. Skipping commit."
+            else
+              git commit -m "Auto-update computer programs data"
+              git push
+            fi
+          else
+            echo "program_data.json does not exist. Nothing to commit."
+          fi

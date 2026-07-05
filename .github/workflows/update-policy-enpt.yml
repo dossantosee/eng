@@ -1,0 +1,43 @@
+name: Update PRIVACY translation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "PRIVACY.md"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install deep-translator
+
+      - name: Run translation script
+        run: python fetch_codes/fetch_policy_enpt.py
+
+      - name: Commit and push PRIVACY_BR.md
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add PRIVACY_BR.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update privacy policy translation"
+            git push
+          fi

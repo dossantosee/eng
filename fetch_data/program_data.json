@@ -1,0 +1,18 @@
+[
+    {
+        "application": "BR 51 2025 004151 9",
+        "date": "26/08/2025",
+        "title": "Programa de computador para monitoramento de estabilidade da posição de fechamento em transportadores de correia do tipo tubular utilizando IIoT, gêmeos digitais, modelos de linguagem autorregressivos e sensores infravermelhos de distância",
+        "title_en": "Computer program for monitoring closing position stability on tubular type belt conveyors using IIoT, digital twins, autoregressive language models and infrared distance sensors",
+        "code": "51686",
+        "refresh": "2026-07-05T14:26:59Z"
+    },
+    {
+        "application": "BR 51 2025 004141 1",
+        "date": "26/08/2025",
+        "title": "Programa de computador para avaliação de estabilidade da posição de fechamento em transportadores de correia do tipo tubular utilizando um modelo linear",
+        "title_en": "Computer program for evaluating stability of the closing position on tubular-type belt conveyors using a linear model",
+        "code": "51680",
+        "refresh": "2026-07-05T14:26:59Z"
+    }
+]

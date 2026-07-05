@@ -1,0 +1,372 @@
+{
+  "Name": "Leonardo dos Santos e Santos",
+  "ORCID_number": "0000-0002-2038-1184",
+  "Countries": [
+    "Brazil",
+    "Saudi Arabia"
+  ],
+  "Keywords": [
+    "Asset Management, Reliability, and Maintenance Engineering",
+    "Belt Conveying Systems",
+    "Digital twinning and IIoT",
+    "Electronics and Mechanical Prototyping",
+    "Automation, Programming and LLMs"
+  ],
+  "Keywords_pt": [
+    "Gestão de Ativos, Confiabilidade e Engenharia de Manutenção",
+    "Sistemas de Transporte por Correia",
+    "Gêmeos digitais e IIoT",
+    "Prototipagem Eletrônica e Mecânica",
+    "Automação, Programação e LLMs"
+  ],
+  "Websites_and_social_links": [
+    {
+      "title": "Asset Management Competency Profile",
+      "url": "https://web.amcouncil.com.au/certification/profile.aspx?u=MTYwOTUsTVRZd09UVXNTVk5zTVROellTRT0="
+    },
+    {
+      "title": "Lattes CV",
+      "url": "https://lattes.cnpq.br/7875423128556801"
+    },
+    {
+      "title": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=SjzP4kMAAAAJ"
+    },
+    {
+      "title": "Scopus Profile",
+      "url": "https://www.scopus.com/authid/detail.uri?authorId=57212864237&display=hIndex"
+    }
+  ],
+  "Other_IDs": [
+    {
+      "type": "Scopus Author ID",
+      "value": "57212864237",
+      "url": "http://www.scopus.com/inward/authorDetails.url?authorID=57212864237&partnerID=MN8TOARS"
+    }
+  ],
+  "Emails_and_domains": [
+    "kaust.edu.sa"
+  ],
+  "Employment": [
+    {
+      "employer": "King Abdullah University of Science and Technology: Jeddah, Makkah, SA",
+      "title": "Asset Management Specialist",
+      "department": "Research Assessment Management",
+      "start": "2021-10",
+      "end": "present",
+      "URL": "https://lem.kaust.edu.sa/"
+    },
+    {
+      "employer": "King Abdullah University of Science and Technology: Jeddah, Mecca Region, SA",
+      "title": "Asset Management Lead for Research",
+      "department": "Research Asset Management",
+      "start": "2024-09",
+      "end": "2026-03",
+      "URL": "https://lem.kaust.edu.sa/"
+    },
+    {
+      "employer": "Eneva: São Luís, Maranhão, BR",
+      "title": "Specialist Reliability Engineer",
+      "department": "Itaqui coal-fired power plant (Engineering)",
+      "start": "2018-06",
+      "end": "2021-09",
+      "URL": "https://www.eneva.com.br/en/our-operations/power-generation/"
+    },
+    {
+      "employer": "Eneva: São Luís, Maranhão, BR",
+      "title": "Logistics Coordinator",
+      "department": "Itaqui coal-fired power plant (Logistics)",
+      "start": "2018-08",
+      "end": "2019-02",
+      "URL": "https://www.eneva.com.br/en/our-operations/power-generation/"
+    },
+    {
+      "employer": "Norsk Hydro (Brazil): Barcarena, Pará, BR",
+      "title": "Senior Reliability Engineer",
+      "department": "Alunorte Alumina Refinery (Engineering)",
+      "start": "2015-09",
+      "end": "2018-05",
+      "URL": "https://www.hydro.com/en/global/sobre-a-hydro/a-hydro-no-mundo/americas/brasil/barcarena/alunorte/"
+    },
+    {
+      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "title": "Maintenance Supervisor",
+      "department": "ALUMAR Alumina Refinery (Port Operations)",
+      "start": "2012-03",
+      "end": "2015-06",
+      "URL": "https://www.alcoa.com/brasil/pt/about/operations"
+    },
+    {
+      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "title": "Maintenance Engineer",
+      "department": "ALUMAR Alumina Refinery (Engineering)",
+      "start": "2010-07",
+      "end": "2012-02",
+      "URL": "https://www.alcoa.com/brasil/pt/about/operations"
+    },
+    {
+      "employer": "AB InBev (Brazil): São Luís, Maranhão, BR",
+      "title": "Maintenance Supervisor",
+      "department": "Equatorial Distribution Hub (Maintenance)",
+      "start": "2009-04",
+      "end": "2010-06",
+      "URL": "https://www.ab-inbev.com/our-locations"
+    },
+    {
+      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "title": "Maintenance and Automation Intern",
+      "department": "ALUMAR Aluminium Smelter (Overhead Cranes)",
+      "start": "2007-10",
+      "end": "2009-03",
+      "URL": "https://www.alcoa.com/brasil/pt/about/operations"
+    }
+  ],
+  "Education": [
+    {
+      "institution": "UTFPR: Curitiba, Paraná, BR",
+      "department": "",
+      "degree": "Specialization",
+      "title": "Applied Generative Artificial Intelligence",
+      "start": "2026",
+      "end": "present",
+      "URL": "https://www.utfpr.edu.br/"
+    },
+    {
+      "institution": "UTFPR: Curitiba, Paraná, BR",
+      "department": "",
+      "degree": "Master of Business Administration (MBA)",
+      "title": "Asset Management",
+      "start": "2023",
+      "end": "2024",
+      "URL": "https://www.utfpr.edu.br/"
+    },
+    {
+      "institution": "UFRN: Natal, Rio Grande do Norte, BR",
+      "department": "",
+      "degree": "Specialization",
+      "title": "Operations Engineering",
+      "start": "2020",
+      "end": "2022",
+      "URL": "https://www.ufrn.br/en"
+    },
+    {
+      "institution": "Universidade Federal do Pará: Belém, Pará, BR",
+      "department": "The Graduate Program in Process Engineering (PPGEP)",
+      "degree": "Master of Science (MSc)",
+      "title": "Process Engineering",
+      "start": "2016",
+      "end": "2018",
+      "URL": "https://ufpa.br/"
+    },
+    {
+      "institution": "Fundação Getulio Vargas: Rio de Janeiro, Rio de Janeiro, BR",
+      "department": "",
+      "degree": "Master of Business Administration (MBA)",
+      "title": "Financial Management, Controllership and Auditing",
+      "start": "2015",
+      "end": "2016",
+      "URL": "https://portal.fgv.br/en"
+    },
+    {
+      "institution": "UFMA: São Luís, Maranhão, BR",
+      "department": "",
+      "degree": "Bachelor of Engineering (B.E.)",
+      "title": "Electrical Engineering",
+      "start": "2003",
+      "end": "2008",
+      "URL": "https://portalpadrao.ufma.br/"
+    }
+  ],
+  "Qualifications": [
+    {
+      "institution": "European Federation of National Maintenance Societies (EFNMS): Brussels, Brussels-Capital Region, BE",
+      "department": "",
+      "degree": "European Expert in Maintenance Management",
+      "title": "EQF Level 7",
+      "start": "2023",
+      "end": "present",
+      "URL": "https://efnms.eu/expert-list-maintenance-management/"
+    },
+    {
+      "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN): Rio de Janeiro, Rio de Janeiro, BR",
+      "department": "",
+      "degree": "Certified Lead Auditor ISO 55001:2014",
+      "title": "",
+      "start": "2023",
+      "end": "present",
+      "URL": "https://abramanoficial.org.br/uploads/Pessoas_Certificadas_MeGA_09-10-2023_763aaf55704bd.pdf"
+    },
+    {
+      "institution": "The Institute of Asset Management (IAM): Bristol, England, GB",
+      "department": "",
+      "degree": "Diploma in Asset Management",
+      "title": "Credential 5006135",
+      "start": "2020",
+      "end": "present",
+      "URL": "https://www.credly.com/badges/0e9c70d5-7873-45bd-96b2-84d3c7b8bf1f/"
+    },
+    {
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
+      "department": "",
+      "degree": "CRL - Certified Reliability Leader",
+      "title": "Credential 153711",
+      "start": "2020",
+      "end": "2029",
+      "URL": "https://www.credly.com/badges/197a3a66-f0ea-462d-a896-b3bfaf361b39"
+    },
+    {
+      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
+      "department": "",
+      "degree": "CSAM - Certified Senior Practitioner in Asset Management",
+      "title": "Credential 12312",
+      "start": "2025",
+      "end": "2028",
+      "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
+    },
+    {
+      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
+      "department": "",
+      "degree": "CPAM - Certified Practitioner in Asset Management",
+      "title": "Credential 424",
+      "start": "2016",
+      "end": "2028",
+      "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
+    },
+    {
+      "institution": "The American Society for Quality (ASQ): Milwaukee, Wisconsin, US",
+      "department": "",
+      "degree": "CRE - Certified Reliability Engineer",
+      "title": "Credential 35285",
+      "start": "2020",
+      "end": "2027",
+      "URL": "https://www.credential.net/d8a5a026-2601-48b4-ab7b-92a7ea275cda#acc.Fh98rVXW"
+    },
+    {
+      "institution": "The Global Institute for Risk Management Standards (G31000): Melbourne, Victoria, AU",
+      "department": "",
+      "degree": "C31000 - Certified ISO 31000 Risk Management Professional",
+      "title": "Credential C1700844",
+      "start": "2017",
+      "end": "2027",
+      "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
+    },
+    {
+      "institution": "The World Partners in Asset Management (WPiAM): Toronto, Ontario, CA",
+      "department": "",
+      "degree": "CAMA - Certified Asset Management Assessor",
+      "title": "Credential 74",
+      "start": "2014",
+      "end": "2027",
+      "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
+    },
+    {
+      "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
+      "department": "",
+      "degree": "CMRP - Certified Maintenance and Reliability Professional",
+      "title": "Credential 150384",
+      "start": "2012",
+      "end": "2027",
+      "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
+    },
+    {
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
+      "department": "",
+      "degree": "CMM - Certified Maintenance Manager",
+      "title": "Credential 192041",
+      "start": "2020",
+      "end": "2026",
+      "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
+    },
+    {
+      "institution": "The Gulf Society for Maintenance & Reliability: Manama, Capital Governorate, BH",
+      "department": "",
+      "degree": "MARC - Maintenance & Asset Reliability Certification",
+      "title": "Credential 1021",
+      "start": "2022",
+      "end": "2025",
+      "URL": "https://gsmrgulf.org/UConten/202411/MYMJY14896.pdf"
+    },
+    {
+      "institution": "UFMA: São Luís, Maranhão, BR",
+      "department": "",
+      "degree": "Specialization",
+      "title": "Electrical Engineering and Instrumentation",
+      "start": "2012",
+      "end": "2013",
+      "URL": "https://legis.senado.leg.br/norma/406728"
+    }
+  ],
+  "Works": [
+    {
+      "title": "A Digitization Framework for Belt Rotation Monitoring in Pipe Conveyor Applications",
+      "publisher": "Sensors",
+      "date": "2025-11-06",
+      "type": "Journal article",
+      "contributors": "Leonardo dos Santos e Santos; Paulo Roberto Campos Flexa Ribeiro Filho; Emanuel Negrão Macêdo",
+      "DOI": "10.3390/s25216792",
+      "DOI_URL": "https://doi.org/10.3390/s25216792"
+    },
+    {
+      "title": "The influence of unsaturation modifications on the tribological characteristics of bio-based lubricants obtained from vegetable oils: a review",
+      "publisher": "Journal of the Brazilian Society of Mechanical Sciences and Engineering",
+      "date": "2025-05",
+      "type": "Journal article",
+      "contributors": "Paulo Roberto Campos Flexa Ribeiro Filho; Leonardo dos Santos e Santos",
+      "DOI": "10.1007/s40430-025-05517-w",
+      "DOI_URL": "https://doi.org/10.1007/s40430-025-05517-w"
+    },
+    {
+      "title": "Belt rotation in pipe conveyors: Development of an overlap monitoring system using digital twins, industrial Internet of things, and autoregressive language models",
+      "publisher": "Measurement",
+      "date": "2024-03-22",
+      "type": "Journal article",
+      "contributors": "Leonardo dos Santos e Santos; Paulo Roberto Campos Flexa Ribeiro Filho; Emanuel Negrão Macêdo",
+      "DOI": "10.1016/j.measurement.2024.114546",
+      "DOI_URL": "http://dx.doi.org/10.1016/j.measurement.2024.114546"
+    },
+    {
+      "title": "Belt Rotation in Pipe Conveyors: Failure Mode Analysis and Overlap Stability Assessment",
+      "publisher": "Sustainability",
+      "date": "2023-07-20",
+      "type": "Journal article",
+      "contributors": "Leonardo S. Santos; Emanuel N. Macêdo; Paulo R. C. F. Ribeiro Filho; Adilto P. A. Cunha; Noé Cheung",
+      "DOI": "10.3390/su151411312",
+      "DOI_URL": "https://doi.org/10.3390/su151411312"
+    },
+    {
+      "title": "A method for investigating the influence of rainwater on the useful life of idlers in pipe belt conveyors during seasonal operations",
+      "publisher": "Engineering Failure Analysis",
+      "date": "2022",
+      "type": "Journal article",
+      "contributors": "dos Santos e Santos, L.; Kleyson da Silva Soares, W.; Roberto Campos Flexa Ribeiro Filho, P.",
+      "DOI": "10.1016/j.engfailanal.2022.106702",
+      "DOI_URL": "http://www.scopus.com/inward/record.url?eid=2-s2.0-85136703232&partnerID=MN8TOARS"
+    },
+    {
+      "title": "Indentation rolling resistance in pipe conveyor belts: a review",
+      "publisher": "Journal of the Brazilian Society of Mechanical Sciences and Engineering",
+      "date": "2021-04",
+      "type": "Journal article",
+      "contributors": "Leonardo dos Santos e Santos; Paulo Roberto Campos Flexa Ribeiro Filho; Emanuel Negrão Macêdo",
+      "DOI": "10.1007/s40430-021-02922-9",
+      "DOI_URL": "https://doi.org/10.1007/s40430-021-02922-9"
+    },
+    {
+      "title": "Development of idler for measuring indentation rolling resistance in pipe conveyor belts",
+      "publisher": "Measurement",
+      "date": "2020-03",
+      "type": "Journal article",
+      "contributors": "Leonardo dos Santos e Santos; Paulo Roberto Campos Flexa Ribeiro Filho; Emanuel Negrão Macêdo",
+      "DOI": "10.1016/j.measurement.2019.107413",
+      "DOI_URL": "https://doi.org/10.1016/j.measurement.2019.107413"
+    }
+  ],
+  "Professional_Activities": [],
+  "Funding": [],
+  "Peer_Review": [
+    {
+      "description": "Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering."
+    }
+  ],
+  "refreshed": "2026-07-05 13:52:57 UTC"
+}
