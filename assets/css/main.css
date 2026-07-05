@@ -165,6 +165,17 @@ input, select, textarea {
 		color: inherit;
 	}
 
+/* Style links inside the privacy content with the specified orange color */
+#privacy-content,
+#license-content {
+    white-space: pre-line;
+}
+
+#privacy-content a,
+#license-content a {
+    color: #FFA500;
+}
+
 		a:hover {
 			border-bottom-color: transparent;
 		}
@@ -1735,6 +1746,9 @@ input, select, textarea {
 			filter: blur(0.1rem);
 			opacity: 0;
 		}
+
+
+
 
 
 
