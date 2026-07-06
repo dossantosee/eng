@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY")
 AUTHOR_ID = os.environ.get("SCOPUS_AUTHOR_ID")
-TARGET_URL = f"https://www.scopus.com/authid/detail.uri?authorId={AUTHOR_ID}&display=hIndex"
+TARGET_URL = f"https://www.scopus.com/authid/detail.uri?authorId={AUTHOR_ID}"
 DATA_FILE = "fetch_data/scopus_data.json"
 
 
