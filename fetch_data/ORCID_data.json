@@ -15,7 +15,7 @@
   "Keywords_pt": [
     "Gestão de Ativos, Confiabilidade e Engenharia de Manutenção",
     "Sistemas de Transporte por Correia",
-    "Gêmeos Digitais e IIoT",
+    "Gêmeos digitais e IIoT",
     "Prototipagem Eletrônica e Mecânica",
     "Automação, Programação e LLMs"
   ],
@@ -123,7 +123,7 @@
   ],
   "Education": [
     {
-      "institution": "UTFPR",
+      "institution": "UTFPR: Curitiba, Paraná, BR",
       "department": "",
       "degree": "Specialization",
       "title": "Applied Generative Artificial Intelligence",
@@ -132,7 +132,7 @@
       "URL": "https://www.utfpr.edu.br/"
     },
     {
-      "institution": "UTFPR",
+      "institution": "UTFPR: Curitiba, Paraná, BR",
       "department": "",
       "degree": "Master of Business Administration (MBA)",
       "title": "Asset Management",
@@ -141,7 +141,7 @@
       "URL": "https://www.utfpr.edu.br/"
     },
     {
-      "institution": "UFRN",
+      "institution": "UFRN: Natal, Rio Grande do Norte, BR",
       "department": "",
       "degree": "Specialization",
       "title": "Operations Engineering",
@@ -150,126 +150,135 @@
       "URL": "https://www.ufrn.br/en"
     },
     {
-      "institution": "Universidade Federal do Pará",
+      "institution": "Universidade Federal do Pará: Belém, Pará, BR",
       "department": "The Graduate Program in Process Engineering (PPGEP)",
       "degree": "Master of Science (MSc)",
-      "title": "Process Engineering",
+      "title": "",
       "start": "2016",
       "end": "2018",
       "URL": "https://ufpa.br/"
+    },
+    {
+      "institution": "Fundação Getulio Vargas: Rio de Janeiro, Rio de Janeiro, BR",
+      "department": "",
+      "degree": "Master of Business Administration (MBA)",
+      "title": "Financial Management, Controllership and Auditing",
+      "start": "2015",
+      "end": "2016",
+      "URL": "https://portal.fgv.br/en"
+    },
+    {
+      "institution": "UFMA: São Luís, Maranhão, BR",
+      "department": "",
+      "degree": "Bachelor of Engineering (B.E.)",
+      "title": "Electrical Engineering",
+      "start": "2003",
+      "end": "2008",
+      "URL": "https://portalpadrao.ufma.br/"
     }
   ],
   "Qualifications": [
     {
-      "institution": "European Federation of National Maintenance Societies (EFNMS)",
+      "institution": "European Federation of National Maintenance Societies (EFNMS): Brussels, Brussels-Capital Region, BE",
       "department": "",
-      "degree": "EQF Level 7",
-      "title": "European Expert in Maintenance Management",
+      "degree": "European Expert in Maintenance Management",
+      "title": "EQF Level 7",
       "start": "2023",
       "end": "present",
       "URL": "https://efnms.eu/expert-list-maintenance-management/"
     },
     {
-      "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN)",
+      "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN): Rio de Janeiro, Rio de Janeiro, BR",
       "department": "",
-      "degree": "",
-      "title": "Certified Lead Auditor ISO 55001:2014",
+      "degree": "Certified Lead Auditor",
+      "title": "ISO 55001:2014",
       "start": "2023",
       "end": "present",
       "URL": "https://abramanoficial.org.br/uploads/Pessoas_Certificadas_MeGA_09-10-2023_763aaf55704bd.pdf"
     },
     {
-      "institution": "The Institute of Asset Management (IAM)",
+      "institution": "The Institute of Asset Management (IAM): Bristol, England, GB",
       "department": "",
-      "degree": "Credential 5006135",
-      "title": "Diploma in Asset Management",
+      "degree": "Diploma in Asset Management",
+      "title": "Credential 5006135",
       "start": "2020",
       "end": "present",
       "URL": "https://www.credly.com/badges/0e9c70d5-7873-45bd-96b2-84d3c7b8bf1f/"
     },
     {
-      "institution": "The Association of Asset Management Professionals (AMP)",
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
       "department": "",
-      "degree": "Credential 153711",
-      "title": "CRL - Certified Reliability Leader",
+      "degree": "CRL",
+      "title": "Certified Reliability Leader",
       "start": "2020",
       "end": "2029",
       "URL": "https://www.credly.com/badges/197a3a66-f0ea-462d-a896-b3bfaf361b39"
     },
     {
-      "institution": "The Asset Management Council (AMCouncil)",
+      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
       "department": "",
-      "degree": "Credential 12312",
-      "title": "CSAM - Certified Senior Practitioner in Asset Management",
+      "degree": "CSAM",
+      "title": "Certified Senior Practitioner in Asset Management",
       "start": "2025",
       "end": "2028",
       "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
     },
     {
-      "institution": "The Asset Management Council (AMCouncil)",
+      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
       "department": "",
-      "degree": "Credential 424",
-      "title": "CPAM - Certified Practitioner in Asset Management",
+      "degree": "CPAM",
+      "title": "Certified Practitioner in Asset Management",
       "start": "2016",
       "end": "2028",
       "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
     },
     {
-      "institution": "The American Society for Quality (ASQ)",
+      "institution": "The American Society for Quality (ASQ): Milwaukee, Wisconsin, US",
       "department": "",
-      "degree": "Credential 35285",
-      "title": "CRE - Certified Reliability Engineer",
+      "degree": "CRE",
+      "title": "Certified Reliability Engineer",
       "start": "2020",
       "end": "2027",
       "URL": "https://www.credential.net/d8a5a026-2601-48b4-ab7b-92a7ea275cda#acc.Fh98rVXW"
     },
     {
-      "institution": "The Global Institute for Risk Management Standards (G31000)",
+      "institution": "The Global Institute for Risk Management Standards (G31000): Melbourne, Victoria, AU",
       "department": "",
-      "degree": "Credential C1700844",
-      "title": "C31000 - Certified ISO 31000 Risk Management Professional",
+      "degree": "C31000",
+      "title": "Certified ISO 31000 Risk Management Professional",
       "start": "2017",
       "end": "2027",
       "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
     },
     {
-      "institution": "The World Partners in Asset Management (WPiAM)",
+      "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
       "department": "",
-      "degree": "Credential 74",
-      "title": "CAMA - Certified Asset Management Assessor",
-      "start": "2014",
-      "end": "2027",
-      "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
-    },
-    {
-      "institution": "The Society for Maintenance and Reliability Professionals (SMRP)",
-      "department": "",
-      "degree": "Credential 150384",
-      "title": "CMRP - Certified Maintenance and Reliability Professional",
+      "degree": "CMRP",
+      "title": "Certified Maintenance and Reliability Professional",
       "start": "2012",
       "end": "2027",
       "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
     },
     {
-      "institution": "The Association of Asset Management Professionals (AMP)",
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
       "department": "",
-      "degree": "Credential 192041",
-      "title": "CMM - Certified Maintenance Manager",
+      "degree": "CMM",
+      "title": "Certified Maintenance Manager",
       "start": "2020",
       "end": "2026",
       "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
     },
     {
-      "institution": "The Gulf Society for Maintenance & Reliability",
+      "institution": "The Gulf Society for Maintenance & Reliability: Manama, Capital Governorate, BH",
       "department": "",
-      "degree": "Credential 1021",
-      "title": "MARC - Maintenance & Asset Reliability Certification",
+      "degree": "MARC",
+      "title": "Maintenance & Asset Reliability Certification",
       "start": "2022",
       "end": "2025",
       "URL": "https://gsmrgulf.org/UConten/202411/MYMJY14896.pdf"
     },
     {
-      "institution": "UFMA",
+      "institution": "UFMA: São Luís, Maranhão, BR",
       "department": "",
       "degree": "Specialization",
       "title": "Electrical Engineering and Instrumentation",
@@ -350,5 +359,5 @@
       "description": "Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering."
     }
   ],
-  "refreshed": "2026-07-06 15:46:27 UTC"
+  "refreshed": "2026-07-07 14:51:27 UTC"
 }
