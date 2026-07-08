@@ -6,14 +6,16 @@
     "Saudi Arabia"
   ],
   "Keywords": [
-    "Asset Management, Reliability, and Maintenance Engineering",
+    "Asset Management",
+    "Reliability and Maintenance Engineering",
     "Belt Conveying Systems",
     "Digital twinning and IIoT",
     "Electronics and Mechanical Prototyping",
     "Automation, Programming and LLMs"
   ],
   "Keywords_pt": [
-    "Gestão de Ativos, Confiabilidade e Engenharia de Manutenção",
+    "Gestão de Ativos",
+    "Confiabilidade e Engenharia de Manutenção",
     "Sistemas de Transporte por Correia",
     "Gêmeos digitais e IIoT",
     "Prototipagem Eletrônica e Mecânica",
@@ -57,7 +59,7 @@
       "URL": "https://lem.kaust.edu.sa/"
     },
     {
-      "employer": "King Abdullah University of Science and Technology: Jeddah, Makkah, SA",
+      "employer": "King Abdullah University of Science and Technology: Jeddah, Mecca Region, SA",
       "title": "Asset Management Lead for Research",
       "department": "Research Asset Management",
       "start": "2024-09",
@@ -153,7 +155,7 @@
       "institution": "Universidade Federal do Pará: Belém, Pará, BR",
       "department": "The Graduate Program in Process Engineering (PPGEP)",
       "degree": "Master of Science (MSc)",
-      "title": "",
+      "title": "Process Engineering",
       "start": "2016",
       "end": "2018",
       "URL": "https://ufpa.br/"
@@ -190,8 +192,8 @@
     {
       "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN): Rio de Janeiro, Rio de Janeiro, BR",
       "department": "",
-      "degree": "Certified Lead Auditor",
-      "title": "ISO 55001:2014",
+      "degree": "Certified Lead Auditor ISO 55001:2014",
+      "title": "",
       "start": "2023",
       "end": "present",
       "URL": "https://abramanoficial.org.br/uploads/Pessoas_Certificadas_MeGA_09-10-2023_763aaf55704bd.pdf"
@@ -208,8 +210,8 @@
     {
       "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
       "department": "",
-      "degree": "CRL",
-      "title": "Certified Reliability Leader",
+      "degree": "CRL - Certified Reliability Leader",
+      "title": "Credential 153711",
       "start": "2020",
       "end": "2029",
       "URL": "https://www.credly.com/badges/197a3a66-f0ea-462d-a896-b3bfaf361b39"
@@ -217,62 +219,26 @@
     {
       "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
       "department": "",
-      "degree": "CSAM",
-      "title": "Certified Senior Practitioner in Asset Management",
+      "degree": "CSAM - Certified Senior Practitioner in Asset Management",
+      "title": "Credential 12312",
       "start": "2025",
-      "end": "2028",
-      "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
-    },
-    {
-      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
-      "department": "",
-      "degree": "CPAM",
-      "title": "Certified Practitioner in Asset Management",
-      "start": "2016",
       "end": "2028",
       "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
     },
     {
       "institution": "The American Society for Quality (ASQ): Milwaukee, Wisconsin, US",
       "department": "",
-      "degree": "CRE",
-      "title": "Certified Reliability Engineer",
+      "degree": "CRE - Certified Reliability Engineer",
+      "title": "Credential 35285",
       "start": "2020",
       "end": "2027",
       "URL": "https://www.credential.net/d8a5a026-2601-48b4-ab7b-92a7ea275cda#acc.Fh98rVXW"
     },
     {
-      "institution": "The Global Institute for Risk Management Standards (G31000): Melbourne, Victoria, AU",
-      "department": "",
-      "degree": "C31000",
-      "title": "Certified ISO 31000 Risk Management Professional",
-      "start": "2017",
-      "end": "2027",
-      "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
-    },
-    {
-      "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
-      "department": "",
-      "degree": "CMRP",
-      "title": "Certified Maintenance and Reliability Professional",
-      "start": "2012",
-      "end": "2027",
-      "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
-    },
-    {
-      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
-      "department": "",
-      "degree": "CMM",
-      "title": "Certified Maintenance Manager",
-      "start": "2020",
-      "end": "2026",
-      "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
-    },
-    {
       "institution": "The Gulf Society for Maintenance & Reliability: Manama, Capital Governorate, BH",
       "department": "",
-      "degree": "MARC",
-      "title": "Maintenance & Asset Reliability Certification",
+      "degree": "MARC - Maintenance & Asset Reliability Certification",
+      "title": "Credential 1021",
       "start": "2022",
       "end": "2025",
       "URL": "https://gsmrgulf.org/UConten/202411/MYMJY14896.pdf"
@@ -359,5 +325,5 @@
       "description": "Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering."
     }
   ],
-  "refreshed": "2026-07-07 14:51:27 UTC"
+  "refreshed": "2026-07-08 14:28:14 UTC"
 }
