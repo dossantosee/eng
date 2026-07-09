@@ -818,6 +818,14 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
 					loadKeywords();
 
+					function normalizeDateDisplay(value) {
+						var text = String(value || '').trim();
+						if (/^\d{4}-\d{2}(-\d{2})?$/.test(text)) {
+							return text.replace(/-/g, '/');
+						}
+						return text;
+					}
+
 					function buildQualificationList(qualifications) {
 						var sorted = (qualifications || []).slice().sort(function (a, b) {
 							return (parseInt(b.start, 10) || 0) - (parseInt(a.start, 10) || 0);
@@ -830,20 +838,30 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 							var title = item.title || '';
 							var url = item.URL || '';
 							var institutionMarkup = url ? '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:#FFA500">' + institution + '</a>' : '<span style="color:#FFA500">' + institution + '</span>';
-							var lines = '<p style="margin:0; line-height:1.4">' + institutionMarkup + '</p>';
+							var linesEn = '<p style="margin:0; line-height:1.4">' + institutionMarkup + '</p>';
+							var linesPt = '<p style="margin:0; line-height:1.4">' + institutionMarkup + '</p>';
 							var detail = title;
 							if (title && degree) detail = title + ' (' + degree + ')';
 							else if (!title && degree) detail = degree;
-							if (detail) lines += '<p style="margin:0; line-height:1.4">' + detail + '</p>';
-							var startVal = item.start || '';
-							var endVal = item.end || '';
-							if (endVal.toLowerCase() === 'present') endVal = 'Present';
-							if (startVal || endVal) {
-								var dateRange = startVal && endVal ? startVal + ' - ' + endVal : (startVal || endVal);
-								lines += '<p style="margin:0; line-height:1.4">' + dateRange + '</p>';
+							if (detail) {
+								linesEn += '<p style="margin:0; line-height:1.4">' + detail + '</p>';
+								linesPt += '<p style="margin:0; line-height:1.4">' + detail + '</p>';
 							}
-							englishItems.push('<li style="margin-bottom:0.5em">' + lines + '</li>');
-							portugueseItems.push('<li style="margin-bottom:0.5em">' + lines + '</li>');
+							var startVal = normalizeDateDisplay(item.start || '');
+							var endValEn = normalizeDateDisplay(item.end || '');
+							var endValPt = normalizeDateDisplay(item.end || '');
+							if (String(endValEn).toLowerCase() === 'present') endValEn = 'Present';
+							if (String(endValPt).toLowerCase() === 'present') endValPt = 'Atual';
+							if (startVal || endValEn) {
+								var dateRangeEn = startVal && endValEn ? startVal + ' - ' + endValEn : (startVal || endValEn);
+								linesEn += '<p style="margin:0; line-height:1.4">' + dateRangeEn + '</p>';
+							}
+							if (startVal || endValPt) {
+								var dateRangePt = startVal && endValPt ? startVal + ' - ' + endValPt : (startVal || endValPt);
+								linesPt += '<p style="margin:0; line-height:1.4">' + dateRangePt + '</p>';
+							}
+							englishItems.push('<li style="margin-bottom:0.5em">' + linesEn + '</li>');
+							portugueseItems.push('<li style="margin-bottom:0.5em">' + linesPt + '</li>');
 						});
 						return {
 							en: '<p>Qualifications:</p><ul style="margin:0; padding-left:1em">' + englishItems.join('') + '</ul>',
@@ -902,9 +920,10 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 							var degree = item.degree || '';
 							var title = item.title || '';
 							var url = item.URL || '';
-							var startVal = item.start || '';
-							var endValRaw = item.end || '';
-							var endVal = String(endValRaw).toLowerCase() === 'present' ? 'Present' : endValRaw;
+							var startVal = normalizeDateDisplay(item.start || '');
+							var endValRaw = normalizeDateDisplay(item.end || '');
+							var endValEn = String(endValRaw).toLowerCase() === 'present' ? 'Present' : endValRaw;
+							var endValPt = String(endValRaw).toLowerCase() === 'present' ? 'Atual' : endValRaw;
 
 							var firstLineText = (degree && title) ? (degree + ', ' + title) : (degree || title || institution);
 							var firstLineMarkup = url
@@ -912,16 +931,23 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								: '<span style="color:#FFA500">' + firstLineText + '</span>';
 
 							var dateRange = '';
-							if (startVal || endVal) {
-								dateRange = startVal && endVal ? (startVal + ' - ' + endVal) : (startVal || endVal);
+							if (startVal || endValEn) {
+								dateRange = startVal && endValEn ? (startVal + ' - ' + endValEn) : (startVal || endValEn);
+							}
+							var dateRangePt = '';
+							if (startVal || endValPt) {
+								dateRangePt = startVal && endValPt ? (startVal + ' - ' + endValPt) : (startVal || endValPt);
 							}
 
 							var lines = '<p style="margin:0; line-height:1.4">' + firstLineMarkup + '</p>'
 								+ '<p style="margin:0; line-height:1.4; color:#ffffff">' + institution + '</p>'
 								+ (dateRange ? '<p style="margin:0; line-height:1.4; color:#ffffff">' + dateRange + '</p>' : '');
+							var linesPt = '<p style="margin:0; line-height:1.4">' + firstLineMarkup + '</p>'
+								+ '<p style="margin:0; line-height:1.4; color:#ffffff">' + institution + '</p>'
+								+ (dateRangePt ? '<p style="margin:0; line-height:1.4; color:#ffffff">' + dateRangePt + '</p>' : '');
 
 							englishItems.push('<li style="margin-bottom:0.75em; color:#ffffff">' + lines + '</li>');
-							portugueseItems.push('<li style="margin-bottom:0.75em; color:#ffffff">' + lines + '</li>');
+							portugueseItems.push('<li style="margin-bottom:0.75em; color:#ffffff">' + linesPt + '</li>');
 						});
 
 						return {
@@ -982,8 +1008,10 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						sorted.forEach(function (item) {
 							var employer = item.employer || 'N/A';
 							var role = item.title || 'N/A';
-							var start = item.start || 'N/A';
-							var end = item.end || 'present';
+							var start = normalizeDateDisplay(item.start || 'N/A');
+							var end = normalizeDateDisplay(item.end || 'present');
+							var endEn = String(end).toLowerCase() === 'present' ? 'Present' : end;
+							var endPt = String(end).toLowerCase() === 'present' ? 'Atual' : end;
 							var url = item.URL || '';
 
 							var employerLine = url
@@ -992,11 +1020,11 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
 							var linesEn = '<p style="margin:0; line-height:1.4">' + employerLine + '</p>'
 								+ '<p style="margin:0; line-height:1.4">' + role + '</p>'
-								+ '<p style="margin:0; line-height:1.4">' + start + ' to ' + end + '</p>';
+								+ '<p style="margin:0; line-height:1.4">' + start + ' - ' + endEn + '</p>';
 
 							var linesPt = '<p style="margin:0; line-height:1.4">' + employerLine + '</p>'
 								+ '<p style="margin:0; line-height:1.4">' + role + '</p>'
-								+ '<p style="margin:0; line-height:1.4">' + start + ' até ' + end + '</p>';
+								+ '<p style="margin:0; line-height:1.4">' + start + ' - ' + endPt + '</p>';
 
 							englishItems.push('<li style="margin-bottom:0.75em; color:#ffffff">' + linesEn + '</li>');
 							portugueseItems.push('<li style="margin-bottom:0.75em; color:#ffffff">' + linesPt + '</li>');
