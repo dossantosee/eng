@@ -6,16 +6,14 @@
     "Saudi Arabia"
   ],
   "Keywords": [
-    "Asset Management",
-    "Reliability and Maintenance Engineering",
+    "Asset Management, Reliability, and Maintenance Engineering",
     "Belt Conveying Systems",
     "Digital twinning and IIoT",
     "Electronics and Mechanical Prototyping",
     "Automation, Programming and LLMs"
   ],
   "Keywords_pt": [
-    "Gestão de Ativos",
-    "Confiabilidade e Engenharia de Manutenção",
+    "Gestão de Ativos, Confiabilidade e Engenharia de Manutenção",
     "Sistemas de Transporte por Correia",
     "Gêmeos digitais e IIoT",
     "Prototipagem Eletrônica e Mecânica",
@@ -184,7 +182,7 @@
       "institution": "European Federation of National Maintenance Societies (EFNMS): Brussels, Brussels-Capital Region, BE",
       "department": "",
       "degree": "European Expert in Maintenance Management",
-      "title": "EQF Level 7",
+      "title": "",
       "start": "2023",
       "end": "present",
       "URL": "https://efnms.eu/expert-list-maintenance-management/"
@@ -233,6 +231,42 @@
       "start": "2020",
       "end": "2027",
       "URL": "https://www.credential.net/d8a5a026-2601-48b4-ab7b-92a7ea275cda#acc.Fh98rVXW"
+    },
+    {
+      "institution": "The Global Institute for Risk Management Standards (G31000): Melbourne, Victoria, AU",
+      "department": "",
+      "degree": "C31000 - Certified ISO 31000 Risk Management Professional",
+      "title": "Credential C1700844",
+      "start": "2017",
+      "end": "2027",
+      "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
+    },
+    {
+      "institution": "The World Partners in Asset Management (WPiAM): Toronto, Ontario, CA",
+      "department": "",
+      "degree": "CAMA - Certified Asset Management Assessor",
+      "title": "Credential 74",
+      "start": "2014",
+      "end": "2027",
+      "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
+    },
+    {
+      "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
+      "department": "",
+      "degree": "CMRP - Certified Maintenance and Reliability Professional",
+      "title": "Credential 150384",
+      "start": "2012",
+      "end": "2027",
+      "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
+    },
+    {
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
+      "department": "",
+      "degree": "CMM - Certified Maintenance Manager",
+      "title": "Credential 192041",
+      "start": "2020",
+      "end": "2026",
+      "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
     },
     {
       "institution": "The Gulf Society for Maintenance & Reliability: Manama, Capital Governorate, BH",
@@ -325,5 +359,5 @@
       "description": "Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering."
     }
   ],
-  "refreshed": "2026-07-08 14:28:14 UTC"
+  "refreshed": "2026-07-09 15:23:08 UTC"
 }
