@@ -1008,6 +1008,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						sorted.forEach(function (item) {
 							var employer = item.employer || 'N/A';
 							var role = item.title || 'N/A';
+							var department = item.department || '';
 							var start = normalizeDateDisplay(item.start || 'N/A');
 							var end = normalizeDateDisplay(item.end || 'present');
 							var endEn = String(end).toLowerCase() === 'present' ? 'Present' : end;
@@ -1019,10 +1020,12 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								: '<span style="color:#FFA500">' + employer + '</span>';
 
 							var linesEn = '<p style="margin:0; line-height:1.4">' + employerLine + '</p>'
+								+ (department ? '<p style="margin:0; line-height:1.4">' + department + '</p>' : '')
 								+ '<p style="margin:0; line-height:1.4">' + role + '</p>'
 								+ '<p style="margin:0; line-height:1.4">' + start + ' - ' + endEn + '</p>';
 
 							var linesPt = '<p style="margin:0; line-height:1.4">' + employerLine + '</p>'
+								+ (department ? '<p style="margin:0; line-height:1.4">' + department + '</p>' : '')
 								+ '<p style="margin:0; line-height:1.4">' + role + '</p>'
 								+ '<p style="margin:0; line-height:1.4">' + start + ' - ' + endPt + '</p>';
 
