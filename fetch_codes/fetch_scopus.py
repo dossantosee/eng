@@ -1,126 +1,206 @@
-import os
-import re
 import json
-import requests
+import re
+import os
 from datetime import datetime, timezone
+from pathlib import Path
 
-FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY")
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+
 AUTHOR_ID = os.environ.get("SCOPUS_AUTHOR_ID")
-TARGET_URL = f"https://www.scopus.com/authid/detail.uri?authorId={AUTHOR_ID}"
+URL = f"https://www.scopus.com/authid/detail.uri?authorId={AUTHOR_ID}"
+
 DATA_FILE = "fetch_data/scopus_data.json"
 
-
-def load_existing_data(filepath: str) -> dict:
-    """Load existing JSON from disk, return empty dict if missing or invalid."""
-    if not os.path.exists(filepath):
-        print(f"  No existing file found at '{filepath}'. Starting fresh.")
-        return {}
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        if isinstance(data, dict):
-            print(f"  Loaded existing data from '{filepath}'.")
-            return data
-        print("  Existing file has unexpected format. Starting fresh.")
-        return {}
-    except (json.JSONDecodeError, OSError) as exc:
-        print(f"  Could not read existing file: {exc}. Starting fresh.")
-        return {}
+DEBUG_HTML_FILE = Path("scopus_debug.html")
+DEBUG_SCREENSHOT_FILE = Path("scopus_debug.png")
 
 
-def fetch_markdown() -> str:
-    """Call Firecrawl and return the markdown string, or raise on failure."""
-    if not FIRECRAWL_API_KEY:
-        raise ValueError("FIRECRAWL_API_KEY environment variable is not set.")
+def clean_number(value):
+    """Convert values such as '1,234' into integer 1234."""
+    if value is None:
+        raise ValueError("A required Scopus metric was not found.")
 
-    headers = {
-        "Authorization": f"Bearer {FIRECRAWL_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "url": TARGET_URL,
-        "formats": ["markdown"]
-    }
+    digits = re.sub(r"[^\d]", "", str(value))
 
-    print("Fetching Scopus data via Firecrawl...")
-    response = requests.post(
-        "https://api.firecrawl.dev/v1/scrape",
-        headers=headers,
-        json=payload,
-        timeout=30
-    )
-    response.raise_for_status()
+    if not digits:
+        raise ValueError(f"Could not convert metric to a number: {value!r}")
 
-    markdown = response.json().get("data", {}).get("markdown", "")
-    if not markdown:
-        raise ValueError("Firecrawl returned an empty markdown body.")
-
-    return markdown
+    return int(digits)
 
 
-def parse_markdown(markdown: str) -> dict:
-    """Extract Scopus fields from markdown via regex."""
-    author_match      = re.search(r'#\s+([^\n]+)', markdown)
-    citations_match   = re.search(r'-\s+(\d+)\s+Citations by', markdown, re.IGNORECASE)
-    citing_docs_match = re.search(r'Citations by \*\*(\d+)\*\*documents', markdown, re.IGNORECASE)
-    author_docs_match = re.search(r'-\s+(\d+)\s+Documents', markdown, re.IGNORECASE)
-    h_index_match     = re.search(r'-\s+(\d+)\s+_h_-index', markdown, re.IGNORECASE)
+def first_text(page, selectors):
+    """Return text from the first selector that exists and has content."""
+    for selector in selectors:
+        locator = page.locator(selector)
 
-    return {
-        "author":    author_match.group(1).strip() if author_match else None,
-        "documents": int(author_docs_match.group(1)) if author_docs_match else None,
-        "citations": int(citations_match.group(1))   if citations_match   else None,
-        "citing":    int(citing_docs_match.group(1)) if citing_docs_match else None,
-        "h-index":   int(h_index_match.group(1))     if h_index_match     else None,
-    }
+        try:
+            if locator.count() > 0:
+                value = locator.first.text_content(timeout=3000)
+
+                if value and value.strip():
+                    return value.strip()
+        except Exception:
+            pass
+
+    return None
 
 
-def is_valid(parsed: dict) -> bool:
-    """
-    Reject the payload if every numeric field is zero/None or the author
-    name could not be extracted — which strongly suggests a failed scrape
-    (login wall, bot block, empty page, etc.).
-    """
-    if not parsed.get("author"):
-        return False
+def validate_scopus_data(scopus_data):
+    """Ensure the result has all required fields and is valid JSON."""
 
-    numeric_fields = ["documents", "citations", "citing", "h-index"]
+    required_fields = [
+        "author",
+        "documents",
+        "citations",
+        "citing",
+        "h-index",
+        "refreshed",
+    ]
 
-    # At least one numeric field must be non-None and greater than zero
-    return any(
-        parsed.get(f) is not None and parsed[f] > 0
-        for f in numeric_fields
+    missing_or_empty = [
+        field
+        for field in required_fields
+        if field not in scopus_data
+        or scopus_data[field] is None
+        or (isinstance(scopus_data[field], str) and not scopus_data[field].strip())
+    ]
+
+    if missing_or_empty:
+        raise ValueError(
+            "Invalid Scopus data. Missing or empty field(s): "
+            + ", ".join(missing_or_empty)
+        )
+
+    # Ensure numeric fields really are numeric and non-negative.
+    for field in ["documents", "citations", "citing", "h-index"]:
+        if not isinstance(scopus_data[field], int) or scopus_data[field] < 0:
+            raise ValueError(
+                f"Invalid Scopus data: '{field}' must be a non-negative integer."
+            )
+
+    # Raises an error if the data cannot be serialized to JSON.
+    json.loads(json.dumps(scopus_data, ensure_ascii=False))
+
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=False,
+        slow_mo=100,
     )
 
+    context = browser.new_context(
+        viewport={"width": 1440, "height": 1000},
+        locale="en-US",
+        user_agent=(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+    )
 
-# ── Main ──────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
+    page = context.new_page()
+    page.set_default_timeout(10000)
 
-    # Always load what is already on disk first
-    existing_data = load_existing_data(DATA_FILE)
-
-    # Attempt the fetch — catch every possible error gracefully
     try:
-        markdown = fetch_markdown()
-        parsed   = parse_markdown(markdown)
-    except Exception as exc:
-        print(f"\n⚠️  Fetch failed: {exc}")
-        print("  Keeping existing data unchanged. No file will be written.")
-        exit(0)
+        page.goto(URL, wait_until="domcontentloaded", timeout=90000)
 
-    # Validate the parsed payload before touching the file
-    if not is_valid(parsed):
-        print("\n⚠️  Parsed data looks invalid (possible bot-block or login wall):")
-        print(f"  {parsed}")
-        print("  Keeping existing data unchanged. No file will be written.")
-        exit(0)
+        cookie_selectors = [
+            "#onetrust-accept-btn-handler",
+            'button:has-text("Accept All")',
+            'button:has-text("Accept all")',
+            'button:has-text("Accept")',
+            'button:has-text("I agree")',
+        ]
 
-    # Stamp with current UTC time and persist
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    scopus_data = {**parsed, "refresh": now_str}
+        for selector in cookie_selectors:
+            try:
+                page.locator(selector).first.click(timeout=2500)
+                break
+            except Exception:
+                pass
 
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(scopus_data, f, indent=2, ensure_ascii=False)
+        print("Current page title:", page.title())
+        print("Current page URL:", page.url)
+        print("\nWaiting for profile metrics...")
 
-    print(f"\n✅  Successfully saved to '{DATA_FILE}':")
-    print(json.dumps(scopus_data, indent=2))
+        page.locator(
+            '[data-testid="metrics-section-citations-count"]'
+        ).wait_for(state="visible", timeout=120000)
+
+        citations = first_text(
+            page,
+            [
+                '[data-testid="metrics-section-citations-count"] '
+                '[data-testid="unclickable-count"]',
+            ],
+        )
+
+        documents = first_text(
+            page,
+            [
+                '[data-testid="metrics-section-document-count"] '
+                '[data-testid="unclickable-count"]',
+            ],
+        )
+
+        h_index = first_text(
+            page,
+            [
+                '[data-testid="metrics-section-h-index"] '
+                '[data-testid="unclickable-count"]',
+            ],
+        )
+
+        citing = first_text(
+            page,
+            [
+                '[data-testid="metrics-section-citations-count"] strong',
+            ],
+        )
+
+        author = first_text(
+            page,
+            [
+                '[data-testid="author-name"]',
+                '[data-testid="author-profile-name"]',
+                '[data-testid="author-details-name"]',
+                "h1",
+            ],
+        )
+
+        scopus_data = {
+            "author": author,
+            "documents": clean_number(documents),
+            "citations": clean_number(citations),
+            "citing": clean_number(citing),
+            "h-index": clean_number(h_index),
+            "refreshed": datetime.now(timezone.utc).strftime(
+                "%Y-%m-%d %H:%M:%S UTC"
+            ),
+        }
+
+        # Checks required fields, non-empty values, numeric metrics, and JSON validity.
+        validate_scopus_data(scopus_data)
+
+        # Create fetch_data/ automatically if it does not exist.
+        Path(DATA_FILE).parent.mkdir(parents=True, exist_ok=True)
+
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(scopus_data, f, indent=2, ensure_ascii=False)
+
+        print(f"\n✅  Successfully saved to '{DATA_FILE}':")
+        print(json.dumps(scopus_data, indent=2, ensure_ascii=False))
+
+    except (PlaywrightTimeoutError, ValueError) as error:
+        DEBUG_HTML_FILE.write_text(page.content(), encoding="utf-8")
+        page.screenshot(path=str(DEBUG_SCREENSHOT_FILE), full_page=True)
+
+        print("\n❌ Could not extract or validate Scopus metrics.")
+        print("Reason:", error)
+        print("Page title:", page.title())
+        print("Page URL:", page.url)
+        print(f"Saved HTML for inspection: {DEBUG_HTML_FILE.resolve()}")
+        print(f"Saved screenshot for inspection: {DEBUG_SCREENSHOT_FILE.resolve()}")
+
+    finally:
+        browser.close()
