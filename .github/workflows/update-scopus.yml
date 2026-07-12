@@ -30,9 +30,11 @@ jobs:
         # Safety net: keeps the job green if Scopus, Playwright,
         # or the runner unexpectedly fails.
         continue-on-error: true
+        env:
+          SCOPUS_AUTHOR_ID: ${{ secrets.SCOPUS_AUTHOR_ID }}
         run: |
-          # The current Python script uses headless=False.
-          # xvfb provides a virtual display for the GitHub Actions runner.
+          # Your script uses headless=False.
+          # xvfb-run provides a virtual graphical display on GitHub Actions.
           xvfb-run -a python fetch_codes/fetch_scopus.py
 
       - name: Upload debugging files if extraction fails
@@ -51,8 +53,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # The Python script writes this file only after validating that
-          # all required fields are present and JSON serialization succeeds.
           if [ -f fetch_data/scopus_data.json ]; then
             git add fetch_data/scopus_data.json
 
