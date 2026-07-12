@@ -1,17 +1,18 @@
 name: Update ORCID Data
 
-# Run automatically at midnight UTC everyday, and allow manual button triggers
+# Run automatically every Sunday at 12:00 UTC, and allow manual triggers.
 on:
   schedule:
-    - cron: '0 12 * * 0'
+    - cron: "0 12 * * 0"
   workflow_dispatch:
 
 jobs:
   fetch_and_commit:
     runs-on: ubuntu-latest
+
     permissions:
-      contents: write # Allows the bot to commit changes
-      
+      contents: write # Allows github-actions[bot] to commit and push updates.
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -19,26 +20,33 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4
+          python -m pip install --upgrade pip
+          pip install requests jsonschema deep-translator playwright
+          playwright install --with-deps chromium
 
-      - name: Fetch ORCID data via Python & Firecrawl
-        # Ignores scraping errors so GitHub doesn't mark the whole run as "Failed"
+      - name: Fetch ORCID data
+        # Keeps the workflow running even if ORCID/API/browser extraction fails.
         continue-on-error: true
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           ORCID_USER: ${{ secrets.ORCID_USER }}
         run: |
           python fetch_codes/fetch_orcid.py
 
-      - name: Commit and push if changed
-        # Ignores git errors just in case something acts up here too
+      - name: Commit and push if ORCID data changed
         continue-on-error: true
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git add fetch_data/ORCID_data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update ORCID data" && git push)
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-update ORCID data"
+            git push
+          else
+            echo "No ORCID data changes to commit."
+          fi
