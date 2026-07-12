@@ -14,7 +14,7 @@
   ],
   "Keywords_pt": [
     "Gestão de Ativos, Confiabilidade e Engenharia de Manutenção",
-    "Sistemas de Transportadores de Cinta",
+    "Sistemas de Transporte por Correia",
     "Gêmeos digitais e IIoT",
     "Prototipagem Eletrônica e Mecânica",
     "Automação, Programação e LLMs"
@@ -49,7 +49,7 @@
   ],
   "Employment": [
     {
-      "employer": "King Abdullah University of Science and Technology: Jeddah, Makkah, SA",
+      "employer": "King Abdullah University of Science and Technology",
       "title": "Asset Management Specialist",
       "department": "Lab Equipment Management (Asset Management)",
       "start": "2021-10",
@@ -57,7 +57,7 @@
       "URL": "https://lem.kaust.edu.sa/"
     },
     {
-      "employer": "King Abdullah University of Science and Technology: Jeddah, Mecca Region, SA",
+      "employer": "King Abdullah University of Science and Technology",
       "title": "Asset Management Lead for Research",
       "department": "Lab Equipment Management (Asset Management)",
       "start": "2024-09",
@@ -65,7 +65,7 @@
       "URL": "https://lem.kaust.edu.sa/"
     },
     {
-      "employer": "Eneva: São Luís, Maranhão, BR",
+      "employer": "Eneva",
       "title": "Specialist Reliability Engineer",
       "department": "Itaqui coal-fired power plant (Engineering)",
       "start": "2018-06",
@@ -73,7 +73,7 @@
       "URL": "https://www.eneva.com.br/en/our-operations/power-generation/"
     },
     {
-      "employer": "Eneva: São Luís, Maranhão, BR",
+      "employer": "Eneva",
       "title": "Logistics Coordinator",
       "department": "Itaqui coal-fired power plant (Logistics)",
       "start": "2018-08",
@@ -81,7 +81,7 @@
       "URL": "https://www.eneva.com.br/en/our-operations/power-generation/"
     },
     {
-      "employer": "Norsk Hydro (Brazil): Barcarena, Pará, BR",
+      "employer": "Norsk Hydro (Brazil)",
       "title": "Senior Reliability Engineer",
       "department": "Alunorte Alumina Refinery (Engineering)",
       "start": "2015-09",
@@ -89,7 +89,7 @@
       "URL": "https://www.hydro.com/en/global/sobre-a-hydro/a-hydro-no-mundo/americas/brasil/barcarena/alunorte/"
     },
     {
-      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "employer": "Alcoa (Brazil)",
       "title": "Maintenance Supervisor",
       "department": "ALUMAR Alumina Refinery (Port Operations)",
       "start": "2012-03",
@@ -97,7 +97,7 @@
       "URL": "https://www.alcoa.com/brasil/pt/about/operations"
     },
     {
-      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "employer": "Alcoa (Brazil)",
       "title": "Maintenance Engineer",
       "department": "ALUMAR Alumina Refinery (Engineering)",
       "start": "2010-07",
@@ -105,7 +105,7 @@
       "URL": "https://www.alcoa.com/brasil/pt/about/operations"
     },
     {
-      "employer": "AB InBev (Brazil): São Luís, Maranhão, BR",
+      "employer": "AB InBev (Brazil)",
       "title": "Maintenance Supervisor",
       "department": "Equatorial Distribution Hub (Maintenance)",
       "start": "2009-04",
@@ -113,7 +113,7 @@
       "URL": "https://www.ab-inbev.com/our-locations"
     },
     {
-      "employer": "Alcoa (Brazil): São Luís, Maranhão, BR",
+      "employer": "Alcoa (Brazil)",
       "title": "Maintenance and Automation Intern",
       "department": "ALUMAR Aluminium Smelter (Overhead Cranes)",
       "start": "2007-10",
@@ -123,7 +123,16 @@
   ],
   "Education": [
     {
-      "institution": "UFPA: Belém, Pará, BR",
+      "institution": "UTFPR",
+      "department": "N/A",
+      "degree": "Specialization",
+      "title": "Applied Generative Artificial Intelligence",
+      "start": "2026",
+      "end": "present",
+      "URL": "https://www.utfpr.edu.br/"
+    },
+    {
+      "institution": "UFPA",
       "department": "The Natural Resources Engineering of the Amazon Graduate Program (PRODERNA)",
       "degree": "Doctor of Philosophy (Ph.D.)",
       "title": "Process Engineering",
@@ -132,8 +141,8 @@
       "URL": "https://ufpa.br/"
     },
     {
-      "institution": "UTFPR: Curitiba, Paraná, BR",
-      "department": "",
+      "institution": "UTFPR",
+      "department": "N/A",
       "degree": "Master of Business Administration (MBA)",
       "title": "Asset Management",
       "start": "2023",
@@ -141,8 +150,8 @@
       "URL": "https://www.utfpr.edu.br/"
     },
     {
-      "institution": "UFRN: Natal, Rio Grande do Norte, BR",
-      "department": "",
+      "institution": "UFRN",
+      "department": "N/A",
       "degree": "Specialization",
       "title": "Operations Engineering",
       "start": "2020",
@@ -150,7 +159,7 @@
       "URL": "https://www.ufrn.br/en"
     },
     {
-      "institution": "Universidade Federal do Pará: Belém, Pará, BR",
+      "institution": "Universidade Federal do Pará",
       "department": "The Graduate Program in Process Engineering (PPGEP)",
       "degree": "Master of Science (MSc)",
       "title": "Process Engineering",
@@ -159,8 +168,8 @@
       "URL": "https://ufpa.br/"
     },
     {
-      "institution": "Fundação Getulio Vargas: Rio de Janeiro, Rio de Janeiro, BR",
-      "department": "",
+      "institution": "Fundação Getulio Vargas",
+      "department": "N/A",
       "degree": "Master of Business Administration (MBA)",
       "title": "Financial Management, Controllership and Auditing",
       "start": "2015",
@@ -168,7 +177,7 @@
       "URL": "https://portal.fgv.br/en"
     },
     {
-      "institution": "PROMINP: São Luís, MA, BR",
+      "institution": "PROMINP",
       "department": "Oil and Gas Brazilian Industry Mobilization Program",
       "degree": "Specialization",
       "title": "Electrical Engineering and Instrumentation",
@@ -177,8 +186,8 @@
       "URL": "https://legis.senado.leg.br/norma/406728"
     },
     {
-      "institution": "UFMA: São Luís, Maranhão, BR",
-      "department": "",
+      "institution": "UFMA",
+      "department": "N/A",
       "degree": "Bachelor of Engineering (B.E.)",
       "title": "Electrical Engineering",
       "start": "2003",
@@ -188,112 +197,94 @@
   ],
   "Qualifications": [
     {
-      "institution": "European Federation of National Maintenance Societies (EFNMS): Brussels, Brussels-Capital Region, BE",
-      "department": "",
-      "degree": "European Expert in Maintenance Management (EQF Level 7)",
-      "title": "",
+      "institution": "European Federation of National Maintenance Societies (EFNMS)",
+      "department": "N/A",
+      "degree": "EQF Level 7",
+      "title": "European Expert in Maintenance Management",
       "start": "2023",
       "end": "present",
       "URL": "https://efnms.eu/expert-list-maintenance-management/"
     },
     {
-      "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN): Rio de Janeiro, Rio de Janeiro, BR",
-      "department": "",
-      "degree": "Certified Lead Auditor ISO 55001:2014",
-      "title": "",
+      "institution": "Associação Brasileira de Manutenção e Gestão de Ativos (ABRAMAN)",
+      "department": "N/A",
+      "degree": "N/A",
+      "title": "Certified Lead Auditor ISO 55001:2014",
       "start": "2023",
       "end": "present",
       "URL": "https://abramanoficial.org.br/uploads/Pessoas_Certificadas_MeGA_09-10-2023_763aaf55704bd.pdf"
     },
     {
-      "institution": "The Institute of Asset Management (IAM): Bristol, England, GB",
-      "department": "",
-      "degree": "Diploma in Asset Management (Credential 5006135)",
-      "title": "",
+      "institution": "The Institute of Asset Management (IAM)",
+      "department": "N/A",
+      "degree": "Credential 5006135",
+      "title": "Diploma in Asset Management",
       "start": "2020",
       "end": "present",
       "URL": "https://www.credly.com/badges/0e9c70d5-7873-45bd-96b2-84d3c7b8bf1f/"
     },
     {
-      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
-      "department": "",
-      "degree": "CRL - Certified Reliability Leader (Credential 153711)",
-      "title": "",
+      "institution": "The Association of Asset Management Professionals (AMP)",
+      "department": "N/A",
+      "degree": "Credential 153711",
+      "title": "CRL - Certified Reliability Leader",
       "start": "2020",
       "end": "2029",
       "URL": "https://www.credly.com/badges/197a3a66-f0ea-462d-a896-b3bfaf361b39"
     },
     {
-      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
-      "department": "",
-      "degree": "CSAM - Certified Senior Practitioner in Asset Management (Credential 12312)",
-      "title": "",
+      "institution": "The Asset Management Council (AMCouncil)",
+      "department": "N/A",
+      "degree": "Credential 12312",
+      "title": "CSAM - Certified Senior Practitioner in Asset Management",
       "start": "2025",
       "end": "2028",
       "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
     },
     {
-      "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
-      "department": "",
-      "degree": "CPAM - Certified Practitioner in Asset Management (Credential 424)",
-      "title": "",
+      "institution": "The Asset Management Council (AMCouncil)",
+      "department": "N/A",
+      "degree": "Credential 424",
+      "title": "CPAM - Certified Practitioner in Asset Management",
       "start": "2016",
       "end": "2028",
       "URL": "https://web.amcouncil.com.au/certification/certification_certificants.aspx"
     },
     {
-      "institution": "The American Society for Quality (ASQ): Milwaukee, Wisconsin, US",
-      "department": "",
-      "degree": "CRE - Certified Reliability Engineer (Credential 35285)",
-      "title": "",
+      "institution": "The American Society for Quality (ASQ)",
+      "department": "N/A",
+      "degree": "Credential 35285",
+      "title": "CRE - Certified Reliability Engineer",
       "start": "2020",
       "end": "2027",
       "URL": "https://www.credential.net/d8a5a026-2601-48b4-ab7b-92a7ea275cda#acc.Fh98rVXW"
     },
     {
-      "institution": "The Global Institute for Risk Management Standards (G31000): Melbourne, Victoria, AU",
-      "department": "",
-      "degree": "C31000 - Certified ISO 31000 Risk Management Professional (Credential C1700844)",
-      "title": "",
+      "institution": "The Global Institute for Risk Management Standards (G31000)",
+      "department": "N/A",
+      "degree": "Credential C1700844",
+      "title": "C31000 - Certified ISO 31000 Risk Management Professional",
       "start": "2017",
       "end": "2027",
       "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
     },
     {
-      "institution": "The World Partners in Asset Management (WPiAM): Toronto, Ontario, CA",
-      "department": "",
-      "degree": "CAMA - Certified Asset Management Assessor (Credential 74)",
-      "title": "",
+      "institution": "The World Partners in Asset Management (WPiAM)",
+      "department": "N/A",
+      "degree": "Credential 74",
+      "title": "CAMA - Certified Asset Management Assessor",
       "start": "2014",
       "end": "2027",
       "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
     },
     {
-      "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
-      "department": "",
-      "degree": "CMRP - Certified Maintenance and Reliability Professional (Credential 150384)",
-      "title": "",
+      "institution": "The Society for Maintenance and Reliability Professionals (SMRP)",
+      "department": "N/A",
+      "degree": "Credential 150384",
+      "title": "CMRP - Certified Maintenance and Reliability Professional",
       "start": "2012",
       "end": "2027",
       "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
-    },
-    {
-      "institution": "UTFPR: Curitiba, Paraná, BR",
-      "department": "",
-      "degree": "Specialization",
-      "title": "Applied Generative Artificial Intelligence",
-      "start": "2026",
-      "end": "present",
-      "URL": "https://www.utfpr.edu.br/"
-    },
-    {
-      "institution": "UTFPR: Curitiba, Paraná, BR",
-      "department": "",
-      "degree": "Master of Business Administration (MBA)",
-      "title": "Asset Management",
-      "start": "2023",
-      "end": "2024",
-      "URL": "https://www.utfpr.edu.br/"
     }
   ],
   "Works": [
@@ -368,5 +359,5 @@
       "description": "Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering."
     }
   ],
-  "refreshed": "2026-07-11 21:04:18 UTC"
+  "refreshed": "2026-07-12 13:17:44 UTC"
 }
