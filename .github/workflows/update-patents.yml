@@ -2,12 +2,13 @@ name: Update Patent Data
 
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: "0 9 * * *"
   workflow_dispatch:
 
 jobs:
   fetch_and_commit:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
 
@@ -18,33 +19,40 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.10'
+          python-version: "3.10"
+          cache: pip
 
-      - name: Install dependencies
-        run: pip install requests deep-translator
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright deep-translator
+
+      - name: Install Chromium for Playwright
+        run: python -m playwright install --with-deps chromium
 
       - name: Fetch patent data
-        # Safety net: keeps the job green even on an unexpected runner crash
+        # Safety net: keeps the workflow running even on an unexpected script error.
+        # The Python script itself preserves the old JSON when scraping fails.
         continue-on-error: true
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           INVENTOR_NAME: ${{ secrets.INVENTOR_NAME }}
+          WIPO_HEADLESS: "true"
         run: python fetch_codes/fetch_patents.py
 
       - name: Commit and push changes
         run: |
-          git config --global user.name  "github-actions[bot]"
+          git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           if [ -f fetch_data/patent_data.json ]; then
             git add fetch_data/patent_data.json
 
-            if git diff-index --quiet HEAD; then
-              echo "No changes in data. Skipping commit."
+            if git diff --cached --quiet; then
+              echo "No changes in patent data. Skipping commit."
             else
-              git commit -m "Auto-update patents data"
+              git commit -m "Auto-update patent data"
               git push
             fi
           else
-            echo "patent_data.json does not exist. Nothing to commit."
+            echo "fetch_data/patent_data.json does not exist. Nothing to commit."
           fi
