@@ -1,247 +1,546 @@
-import os
 import json
+import os
+import re
 import time
-import requests
-from urllib.parse import quote
 from datetime import datetime, timezone
-from deep_translator import GoogleTranslator
+from pathlib import Path
+from urllib.parse import urlencode
 
-FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY")
-INVENTOR_NAME     = os.environ.get("INVENTOR_NAME")
-DATA_FILE         = "fetch_data/patent_data.json"
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright
+
+try:
+    from deep_translator import GoogleTranslator
+except ImportError:
+    GoogleTranslator = None
 
 
-def load_existing_data(filepath: str) -> list:
-    """Load existing JSON from disk, return empty list if missing or invalid."""
-    if not os.path.exists(filepath):
+INVENTOR_NAME = os.environ.get("INVENTOR_NAME")
+DATA_FILE = Path("fetch_data/patent_data.json")
+
+WIPO_BASE_URL = "https://patentscope.wipo.int/search/en/result.jsf"
+
+# Set WIPO_HEADLESS=false if WIPO blocks headless Chromium in your environment.
+HEADLESS_BROWSER = os.environ.get("WIPO_HEADLESS", "true").lower() not in {
+    "0",
+    "false",
+    "no",
+}
+
+MIN_TRANSLATION_INTERVAL = 0.4
+MAX_TRANSLATION_RETRIES = 4
+last_translation_time = 0.0
+
+
+def load_existing_data(filepath: Path) -> list:
+    """Load existing JSON from disk, returning an empty list if unavailable."""
+    if not filepath.exists():
         print(f"  No existing file found at '{filepath}'. Starting fresh.")
         return []
+
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        with filepath.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+
         if isinstance(data, list):
-            print(f"  Loaded {len(data)} existing records from '{filepath}'.")
+            print(f"  Loaded {len(data)} existing record(s) from '{filepath}'.")
             return data
-        print("  Existing file has unexpected format. Starting fresh.")
+
+        print("  Existing file has an unexpected format. Starting fresh.")
         return []
+
     except (json.JSONDecodeError, OSError) as exc:
         print(f"  Could not read existing file: {exc}. Starting fresh.")
         return []
 
 
-def fetch_patents(inventor_name: str) -> list:
+def clean_text(value: str) -> str:
+    """Normalize whitespace in text extracted from the browser DOM."""
+    return " ".join((value or "").split()).strip()
+
+
+def sentence_case(text: str) -> str:
     """
-    Call Firecrawl and return the extracted patent list.
-    Raises on any network / API / empty-response error.
+    Normalize titles returned by WIPO.
+
+    WIPO titles may be stored in uppercase or lowercase depending on the
+    original patent-office record.
     """
-    if not FIRECRAWL_API_KEY:
-        raise ValueError("FIRECRAWL_API_KEY environment variable is not set.")
+    text = clean_text(text)
 
-    inventor_query = f'FP:("{inventor_name}")'
-    url = (
-        "https://patentscope.wipo.int/search/en/result.jsf?query="
-        + quote(inventor_query, safe="():")
-    )
-    print(f"Scraping WIPO Patents for: {url}")
-
-    headers = {
-        "Authorization": f"Bearer {FIRECRAWL_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "url": url,
-        "formats": ["extract"],
-        "timeout": 180000,
-        "actions": [
-            {"type": "wait", "milliseconds": 5000}
-        ],
-        "extract": {
-            "prompt": (
-                "Extract the list of patents from the WIPO Patents search results "
-                "considering distinct application numbers. For each patent: extract "
-                "the complete 'title' in pt-BR in sentence case, grab the 4-digit "
-                "'year' from the filing or publication date, get the patent or "
-                "'application' number (e.g., BR102019023234), and get the 'url' link "
-                "(e.g., https://patentscope.wipo.int/search/en/detail.jsf;"
-                "jsessionid=8EC6B3BC6C39FD0F6875DE3571580CBC.wapp2nA?"
-                "docId=BR325279117&_cid=P20-MR0UGE-89008-1)"
-                
-            ),
-            "schema": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "title":       {"type": "string"},
-                        "year":        {"type": "integer"},
-                        "application": {"type": "string"},
-                        "url":         {"type": "string"}
-                    },
-                    "required": ["title", "year", "application", "url"]
-                }
-            }
-        }
-    }
-
-    print("Fetching data from Firecrawl...")
-    response = requests.post(
-        "https://api.firecrawl.dev/v1/scrape",
-        headers=headers,
-        json=payload,
-        timeout=60
-    )
-    response.raise_for_status()
-
-    extracted = response.json().get("data", {}).get("extract", [])
-
-    if not extracted:
-        raise ValueError("Firecrawl returned an empty extract payload.")
-
-    return extracted
-
-
-def is_valid(records: list) -> bool:
-    """
-    Reject the payload if it is empty or if every record is missing
-    the required fields — which suggests a failed scrape or bot-block.
-    """
-    if not records:
-        return False
-
-    required = {"title", "year", "application", "url"}
-
-    # At least one record must have all required fields populated
-    return any(
-        all(record.get(field) for field in required)
-        for record in records
-    )
-
-
-def stamp_records(records: list, now_str: str) -> list:
-    """Add the refresh timestamp to every record."""
-    return [{**record, "refresh": now_str} for record in records]
-
-
-# ── Rate limiting for the translation API ──────────────────────────────────
-# Google's endpoint allows up to 5 requests/second. We throttle to one
-# request every 0.4s (2.5 req/s) to stay comfortably under that ceiling
-# even with clock jitter, plus retry with backoff on transient errors.
-_MIN_INTERVAL = 0.4          # seconds between translate calls
-_MAX_RETRIES = 4
-_last_call_time = [0.0]      # mutable holder so it can be updated in-place
-
-
-def _throttle():
-    """Block just long enough to keep spacing >= _MIN_INTERVAL since last call."""
-    now = time.monotonic()
-    elapsed = now - _last_call_time[0]
-    if elapsed < _MIN_INTERVAL:
-        time.sleep(_MIN_INTERVAL - elapsed)
-    _last_call_time[0] = time.monotonic()
-
-
-def translate_title(text: str, source: str = "pt", target: str = "en") -> str:
-    """
-    Translate a single title, one request at a time, throttled to stay
-    under Google's rate limit. Retries with exponential backoff on
-    transient errors (e.g. "too many requests"). Returns an empty string
-    only if every attempt fails, so a hiccup never breaks the save step.
-    """
     if not text:
         return ""
 
-    for attempt in range(1, _MAX_RETRIES + 1):
-        _throttle()
+    normalized = text.lower()
+    return normalized[0].upper() + normalized[1:]
+
+
+def build_application_number(country: str, number: str) -> str:
+    """
+    WIPO displays country and application number separately.
+
+    Example:
+        country = "BR"
+        number = "102019023234"
+        result = "BR102019023234"
+    """
+    country = clean_text(country).upper()
+    number = clean_text(number).replace(" ", "")
+
+    if not number:
+        return ""
+
+    if country and not number.upper().startswith(country):
+        return f"{country}{number}"
+
+    return number
+
+
+def build_wipo_url(inventor_name: str) -> str:
+    """Create a WIPO PATENTSCOPE result URL for the inventor query."""
+    query = f'FP:("{inventor_name}")'
+    return f"{WIPO_BASE_URL}?{urlencode({'query': query})}"
+
+
+def set_results_per_page(page, per_page: str = "200") -> None:
+    """
+    Change WIPO's "Per page" selector and wait for the PrimeFaces AJAX
+    request to replace the results container.
+    """
+    selector = 'select[id="resultListCommandsForm:perPage:input"]'
+    per_page_select = page.locator(selector)
+
+    per_page_select.wait_for(state="visible", timeout=45000)
+
+    current_value = per_page_select.input_value()
+
+    if current_value == per_page:
+        print(f"  WIPO is already configured for {per_page} results per page.")
+        return
+
+    print(f"  Setting WIPO results per page to {per_page}...")
+
+    # Save the current HTML so we can verify that PrimeFaces refreshed results.
+    previous_results_html = page.locator("#results-container").inner_html()
+
+    # select_option() triggers the select element's PrimeFaces onchange AJAX call.
+    with page.expect_response(
+        lambda response: (
+            response.request.method == "POST"
+            and "result.jsf" in response.url
+        ),
+        timeout=45000,
+    ):
+        per_page_select.select_option(per_page)
+
+    # IMPORTANT: Playwright Python requires the second script argument as arg=.
+    page.wait_for_function(
+        """
+        ({ selector, previousHtml, expectedValue }) => {
+            const select = document.querySelector(selector);
+            const results = document.querySelector("#results-container");
+
+            return Boolean(
+                select &&
+                select.value === expectedValue &&
+                results &&
+                results.innerHTML !== previousHtml
+            );
+        }
+        """,
+        arg={
+            "selector": selector,
+            "previousHtml": previous_results_html,
+            "expectedValue": per_page,
+        },
+        timeout=45000,
+    )
+
+    page.locator(".ps-patent-result").first.wait_for(
+        state="attached",
+        timeout=45000,
+    )
+
+    result_count = page.locator(".ps-patent-result").count()
+    print(f"  WIPO loaded {result_count} result(s) on the current page.")
+
+def fetch_patents(inventor_name: str) -> list:
+    """
+    Open WIPO PATENTSCOPE with Chromium, set results per page to 200,
+    and extract the visible patent records from the rendered DOM.
+    """
+    search_url = build_wipo_url(inventor_name)
+
+    print(f"Fetching WIPO PATENTSCOPE records for: {inventor_name}")
+    print(f"URL: {search_url}")
+    print(f"Browser mode: {'headless' if HEADLESS_BROWSER else 'visible'}")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=HEADLESS_BROWSER)
+
+        context = browser.new_context(
+            locale="en-US",
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            viewport={"width": 1440, "height": 1200},
+        )
+
+        page = context.new_page()
+        page.set_default_timeout(45000)
+
         try:
-            return GoogleTranslator(source=source, target=target).translate(text)
+            page.goto(search_url, wait_until="domcontentloaded", timeout=60000)
+
+            # Wait for initial WIPO records using the default per-page setting.
+            page.wait_for_selector(
+                ".ps-patent-result",
+                state="attached",
+                timeout=45000,
+            )
+
+            # Change WIPO from its default 10 results per page to 200.
+            set_results_per_page(page, "200")
+
+            # Extract directly from the refreshed rendered WIPO DOM.
+            raw_records = page.locator(".ps-patent-result").evaluate_all(
+                """
+                cards => cards.map(card => {
+                    const titleElement = card.querySelector(".needTranslation-title");
+
+                    const applicationLink = card.querySelector(
+                        ".ps-patent-result--title a"
+                    );
+
+                    const applicationElement = card.querySelector(
+                        ".ps-patent-result--title--patent-number"
+                    );
+
+                    const dateElement = card.querySelector(
+                        '[id$="resultListTableColumnPubDate"]'
+                    );
+
+                    const countryElements = card.querySelectorAll(
+                        ".ps-patent-result--title--ctr-pubdate .notranslate"
+                    );
+
+                    let country = "";
+
+                    for (const element of countryElements) {
+                        const value = (element.textContent || "").trim();
+
+                        if (/^[A-Z]{2}$/.test(value)) {
+                            country = value;
+                            break;
+                        }
+                    }
+
+                    return {
+                        title: titleElement ? titleElement.textContent : "",
+                        applicationNumber: applicationElement
+                            ? applicationElement.textContent
+                            : "",
+                        country: country,
+                        publicationDate: dateElement
+                            ? dateElement.textContent
+                            : "",
+                        url: applicationLink ? applicationLink.href : ""
+                    };
+                })
+                """
+            )
+
+            # Check whether there are multiple pages after selecting 200 results.
+            # Stop safely instead of writing incomplete output.
+            page_count_text = page.locator(
+                ".ps-paginator--page--value"
+            ).first.text_content()
+
+            if page_count_text:
+                parts = page_count_text.replace("\n", " ").split("/")
+
+                if len(parts) == 2:
+                    total_pages_match = re.search(r"\d+", parts[1])
+
+                    if total_pages_match:
+                        total_pages = int(total_pages_match.group(0))
+
+                        if total_pages > 1:
+                            raise ValueError(
+                                f"WIPO returned {total_pages} pages even after "
+                                "setting 200 results per page. Stopping to avoid "
+                                "saving only the first page."
+                            )
+
+        except PlaywrightTimeoutError as exc:
+            page_title = page.title()
+
+            try:
+                body_preview = clean_text(page.locator("body").inner_text())[:500]
+            except Exception:
+                body_preview = "Unable to read page body."
+
+            raise RuntimeError(
+                "Timed out while waiting for WIPO results. "
+                f"Page title: {page_title!r}. "
+                f"Page preview: {body_preview!r}. "
+                "Try setting WIPO_HEADLESS=false and run again."
+            ) from exc
+
+        finally:
+            browser.close()
+
+    records = []
+    seen_applications = set()
+
+    for item in raw_records:
+        title = sentence_case(item.get("title", ""))
+        country = clean_text(item.get("country", ""))
+        application_number = clean_text(item.get("applicationNumber", ""))
+        publication_date = clean_text(item.get("publicationDate", ""))
+        detail_url = clean_text(item.get("url", ""))
+
+        application = build_application_number(country, application_number)
+        year_match = re.search(r"\b(?:19|20)\d{2}\b", publication_date)
+
+        if not year_match:
+            print(
+                "  Skipping record without a valid publication year: "
+                f"{application or application_number}"
+            )
+            continue
+
+        year = int(year_match.group(0))
+
+        if not title or not application or not detail_url:
+            print(
+                "  Skipping incomplete WIPO record: "
+                f"title={title!r}, application={application!r}, url={detail_url!r}"
+            )
+            continue
+
+        if application in seen_applications:
+            continue
+
+        seen_applications.add(application)
+
+        records.append(
+            {
+                "title": title,
+                "year": year,
+                "application": application,
+                "url": detail_url,
+            }
+        )
+
+    if not records:
+        raise ValueError(
+            "No patent records were extracted from the WIPO result cards."
+        )
+
+    print(f"  Extracted {len(records)} distinct patent record(s).")
+    return records
+
+
+def is_valid(records: list) -> bool:
+    """Validate extracted data before replacing the JSON file."""
+    if not records:
+        return False
+
+    required_fields = {"title", "year", "application", "url"}
+
+    for record in records:
+        if not isinstance(record, dict):
+            return False
+
+        if not required_fields.issubset(record):
+            return False
+
+        if not isinstance(record["title"], str) or not record["title"].strip():
+            return False
+
+        if not isinstance(record["year"], int):
+            return False
+
+        if not isinstance(record["application"], str) or not record["application"]:
+            return False
+
+        if not isinstance(record["url"], str) or not record["url"].startswith("https://"):
+            return False
+
+    return True
+
+
+def existing_translation_map(existing_records: list) -> dict:
+    """
+    Return translations indexed by application number.
+
+    A translation is reused only if the original Portuguese title remains
+    exactly the same.
+    """
+    translations = {}
+
+    for record in existing_records:
+        application = record.get("application")
+        title = record.get("title")
+        title_en = record.get("title_en")
+
+        if application and title and title_en:
+            translations[application] = {
+                "title": title,
+                "title_en": title_en,
+            }
+
+    return translations
+
+
+def throttle_translation_requests() -> None:
+    """Keep a safe interval between Google translation requests."""
+    global last_translation_time
+
+    elapsed = time.monotonic() - last_translation_time
+
+    if elapsed < MIN_TRANSLATION_INTERVAL:
+        time.sleep(MIN_TRANSLATION_INTERVAL - elapsed)
+
+    last_translation_time = time.monotonic()
+
+
+def translate_title(text: str) -> str:
+    """Translate one Portuguese patent title into English."""
+    if not text:
+        return ""
+
+    if GoogleTranslator is None:
+        raise RuntimeError(
+            "deep-translator is not installed. Run: pip install deep-translator"
+        )
+
+    translator = GoogleTranslator(source="pt", target="en")
+
+    for attempt in range(1, MAX_TRANSLATION_RETRIES + 1):
+        throttle_translation_requests()
+
+        try:
+            translated = clean_text(translator.translate(text))
+
+            if translated:
+                return translated
+
+            raise ValueError("Translation returned an empty result.")
+
         except Exception as exc:
-            is_last_attempt = attempt == _MAX_RETRIES
-            if is_last_attempt:
-                print(f"  ⚠️  Translation failed for '{text[:60]}...': {exc}")
-                return ""
-            backoff = 2 ** attempt  # 2s, 4s, 8s, 16s
-            print(f"  ⚠️  Attempt {attempt}/{_MAX_RETRIES} failed "
-                  f"({exc}). Retrying in {backoff}s...")
+            if attempt == MAX_TRANSLATION_RETRIES:
+                raise RuntimeError(
+                    f"Translation failed for {text!r}: {exc}"
+                ) from exc
+
+            backoff = 2**attempt
+
+            print(
+                f"  Translation attempt {attempt}/{MAX_TRANSLATION_RETRIES} "
+                f"failed: {exc}. Retrying in {backoff}s..."
+            )
+
             time.sleep(backoff)
 
-    return ""  # unreachable, kept for clarity
+    return ""
 
 
-def add_translations(records: list) -> list:
+def add_translations(records: list, existing_records: list) -> list:
     """
-    Insert 'title_en' right after 'title' for every record, keeping
-    the original key order/approach for everything else intact.
+    Add title_en immediately after title.
+
+    Existing saved translations are reused when the corresponding Portuguese
+    title did not change.
     """
-    translated = []
-    total = len(records)
-    for i, record in enumerate(records, 1):
-        print(f"  Translating title {i}/{total}...")
-        title_en = translate_title(record.get("title", ""))
+    previous_translations = existing_translation_map(existing_records)
+    translated_records = []
 
-        new_record = {}
-        for key, value in record.items():
-            new_record[key] = value
-            if key == "title":
-                new_record["title_en"] = title_en
-        # Fallback in case 'title' key was ever missing
-        if "title_en" not in new_record:
-            new_record["title_en"] = title_en
+    for index, record in enumerate(records, start=1):
+        application = record["application"]
+        title = record["title"]
+        old_record = previous_translations.get(application)
 
-        translated.append(new_record)
-    return translated
+        if old_record and old_record["title"] == title:
+            title_en = old_record["title_en"]
+            print(f"  Reusing translation {index}/{len(records)}: {application}")
+        else:
+            print(f"  Translating title {index}/{len(records)}: {application}")
+            title_en = translate_title(title)
+
+        translated_records.append(
+            {
+                "title": title,
+                "title_en": title_en,
+                "year": record["year"],
+                "application": application,
+                "url": record["url"],
+            }
+        )
+
+    return translated_records
 
 
-def print_results(records: list):
-    print(f"\n  {'='*70}")
+def stamp_records(records: list, refresh_timestamp: str) -> list:
+    """Add the current UTC refresh timestamp to every record."""
+    return [{**record, "refresh": refresh_timestamp} for record in records]
+
+
+def save_records(records: list, filepath: Path) -> None:
+    """Create the output directory if needed and write JSON."""
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+    with filepath.open("w", encoding="utf-8") as file:
+        json.dump(records, file, indent=2, ensure_ascii=False)
+        file.write("\n")
+
+
+def print_results(records: list) -> None:
+    """Print the final patent records."""
+    print(f"\n  {'=' * 70}")
     print(f"  Found {len(records)} patent(s):")
-    print(f"  {'='*70}")
-    for i, r in enumerate(records, 1):
-        print(f"\n  [{i:03d}] Title:       {r.get('title')}")
-        print(f"        Title (EN): {r.get('title_en')}")
-        print(f"        Year:        {r.get('year')}")
-        print(f"        Application: {r.get('application')}")
-        print(f"        URL:         {r.get('url')}")
-        print(f"        Refresh:     {r.get('refresh', 'n/a')}")
-    print(f"\n  {'='*70}")
-    print(f"  Total: {len(records)} records")
+    print(f"  {'=' * 70}")
+
+    for index, record in enumerate(records, start=1):
+        print(f"\n  [{index:03d}] Title:       {record.get('title')}")
+        print(f"        Title (EN): {record.get('title_en')}")
+        print(f"        Year:        {record.get('year')}")
+        print(f"        Application: {record.get('application')}")
+        print(f"        URL:         {record.get('url')}")
+        print(f"        Refresh:     {record.get('refresh')}")
+
+    print(f"\n  {'=' * 70}")
+    print(f"  Total: {len(records)} record(s)")
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-
     if not INVENTOR_NAME:
         print("⚠️  INVENTOR_NAME environment variable is not set. Exiting.")
-        exit(0)
+        raise SystemExit(0)
 
-    # Always load what is already on disk first
     existing_data = load_existing_data(DATA_FILE)
 
-    # Attempt the fetch — catch every possible error gracefully
     try:
         raw_records = fetch_patents(INVENTOR_NAME)
+
+        if not is_valid(raw_records):
+            raise ValueError("Extracted patent records failed validation.")
+
+        print("\nTranslating titles to English...")
+        patent_data = add_translations(raw_records, existing_data)
+
+        refresh_timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        patent_data = stamp_records(patent_data, refresh_timestamp)
+
+        save_records(patent_data, DATA_FILE)
+
     except Exception as exc:
-        print(f"\n⚠️  Fetch failed: {exc}")
-        print("  Keeping existing data unchanged. No file will be written.")
-        exit(0)
-
-    # Validate the parsed payload before touching the file
-    if not is_valid(raw_records):
-        print("\n⚠️  Extracted data looks invalid (possible bot-block or empty page):")
-        print(f"  {raw_records}")
-        print("  Keeping existing data unchanged. No file will be written.")
-        exit(0)
-
-    # Stamp with current UTC time
-    now_str      = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    patent_data  = stamp_records(raw_records, now_str)
-
-    # Translate titles pt-BR -> en, adding 'title_en' to each record
-    print("\nTranslating titles to English...")
-    patent_data = add_translations(patent_data)
-
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(patent_data, f, indent=2, ensure_ascii=False)
+        print(f"\n⚠️  Patent update failed: {exc}")
+        print("  Existing data was kept unchanged. No file was written.")
+        raise SystemExit(0)
 
     print_results(patent_data)
-    print(f"\n✅  Successfully saved {len(patent_data)} patents to '{DATA_FILE}'.")
+    print(f"\n✅ Successfully saved {len(patent_data)} patent(s) to '{DATA_FILE}'.")
