@@ -840,9 +840,12 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 							var institutionMarkup = url ? '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:#FFA500">' + institution + '</a>' : '<span style="color:#FFA500">' + institution + '</span>';
 							var linesEn = '<p style="margin:0; line-height:1.4">' + institutionMarkup + '</p>';
 							var linesPt = '<p style="margin:0; line-height:1.4">' + institutionMarkup + '</p>';
-							var detail = title;
-							if (title && degree) detail = title + ' (' + degree + ')';
-							else if (!title && degree) detail = degree;
+							var degreeText = String(degree || '').trim();
+							var titleText = String(title || '').trim();
+							var detail = '';
+							if (degreeText && titleText) detail = degreeText + ' (' + titleText + ')';
+							else if (degreeText) detail = degreeText;
+							else if (titleText) detail = titleText;
 							if (detail) {
 								linesEn += '<p style="margin:0; line-height:1.4">' + detail + '</p>';
 								linesPt += '<p style="margin:0; line-height:1.4">' + detail + '</p>';
