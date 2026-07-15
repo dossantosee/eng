@@ -26,7 +26,7 @@ Os elementos originais abrangidos por esta restrição incluem, mas não estão 
 
 1. **Texto:** Todo o conteúdo escrito biográfico, profissional e pessoal.
 2. **Mídia:** Todas as imagens, fotografias, logotipos e gráficos originais adicionados ao site.
-3. **Código:** JavaScript personalizado, scripts Python (`fetch_orcid.py`), ações automatizadas do GitHub e configurações de fluxo de trabalho (`.yml`).
+3. **Código:** JavaScript personalizado, scripts Python ('.py'), ações automatizadas do GitHub e configurações de fluxo de trabalho ('.yml').
 4. **Estilo:** Modificações CSS personalizadas feitas sob medida especificamente para este projeto.
 5. **Design:** novos layouts de página, estruturas e recursos personalizados sobrepostos ao modelo original.
 
@@ -59,17 +59,17 @@ A imagem de fundo do site é licenciada separadamente do código-fonte e do mode
 
 > [!IMPORTANT]
 > **USO NÃO AUTORIZADO DE AI/ML PROIBIDO.**
-> Sujeito às licenças subjacentes concedidas acima, o(s) Autor(es) reserva(m) explicitamente todos os direitos relativos ao texto, código, documentação e dados deste repositório (o "Conteúdo").
+> Sujeito às licenças subjacentes concedidas acima, o Autor reserva explicitamente todos os direitos relativos ao texto, código, documentação e dados deste repositório (o "Conteúdo").
 
 ### 1. Proibição de uso em modelos de IA/ML
 O Conteúdo não deve ser reproduzido, copiado, indexado ou usado de qualquer maneira para:
 *   **(a)** O treinamento, o ajuste fino ou o teste de qualquer inteligência artificial, aprendizado de máquina ou modelo de linguagem grande (LLM).
 *   **(b)** Os processos de inferência de LLMs, incluindo, mas não se limitando a Geração Aumentada de Recuperação (RAG) ou arquiteturas semelhantes.
 *   **(c)** Criar wrappers programáticos, integrações de API ou algoritmos derivados projetados para extrair inteligência ou estrutura do Conteúdo.
-*   **(d)** Engenharia reversa do Conteúdo para deduzir algoritmos subjacentes com a finalidade de construir arquiteturas de aprendizado de máquina concorrentes.
+*   **(d)** Fazer engenharia reversa do Conteúdo para deduzir algoritmos subjacentes com a finalidade de construir arquiteturas de aprendizado de máquina concorrentes.
 
 ### 2. Cancelamento Explícito e Reserva Legal
-Todo este repositório e seu conteúdo associado foram explicitamente excluídos da Mineração de Texto e Dados (TDM).
+Todo este repositório e seu conteúdo associado estão explicitamente excluídos da Mineração de Texto e Dados (TDM).
 *   **União Europeia e Reino Unido:** Isto funciona como uma reserva de direitos expressa e legível por máquina, de acordo com o Artigo 4(3) da Diretiva (UE) 2019/790 (Diretiva do Mercado Único Digital) e a Seção 29A da Lei de Direitos Autorais, Desenhos e Patentes do Reino Unido de 1988.
 *   **Estados Unidos:** O autor reserva estritamente todos os direitos exclusivos concedidos sob 17 U.S.C. § 106 da Lei de Direitos Autorais dos EUA. O uso deste Conteúdo para treinamento algorítmico é expressamente declarado fora do escopo de qualquer licença implícita, e o Autor rejeita qualquer afirmação de que tal uso constitua "Uso Justo" sob 17 U.S.C. § 107.
 *   **Global:** Esta restrição está alinhada com as proteções de propriedade intelectual e direitos autorais conforme codificadas pela Convenção de Berna e pelo Tratado de Direitos Autorais da OMPI.
@@ -80,4 +80,4 @@ Qualquer processamento, agregação ou indexação automatizado deste Conteúdo 
 ## ⚠️ Isenção de garantia
 
 > [!WARNING]
-> O SOFTWARE E O CONTEÚDO NESTE REPOSITÓRIO SÃO FORNECIDOS "COMO ESTÃO", SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO SE LIMITANDO ÀS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM HIPÓTESE ALGUMA OS AUTORES OU DETENTORES DE DIREITOS AUTORAIS SERÃO RESPONSÁVEIS POR QUALQUER REIVINDICAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, ATO ILÍCITO OU DE OUTRA FORMA, DECORRENTE DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRAS NEGOCIAÇÕES NO SOFTWARE.
+> O SOFTWARE E O CONTEÚDO NESTE REPOSITÓRIO SÃO FORNECIDOS "COMO ESTÃO", SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO SE LIMITANDO ÀS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM HIPÓTESE ALGUMA O AUTOR OU OS DETENTORES DOS DIREITOS AUTORAIS SERÃO RESPONSÁVEIS POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, ATO ILÍCITO OU DE OUTRA FORMA, DECORRENTE DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRAS NEGOCIAÇÕES NO SOFTWARE.
