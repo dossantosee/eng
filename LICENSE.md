@@ -26,7 +26,7 @@ The original elements covered by this restriction include, but are not limited t
 
 1. **Text:** All biographical, professional, and personal written content.
 2. **Media:** All original images, photographs, logos, and graphics added to the site.
-3. **Code:** Custom JavaScript, Python scripts (`fetch_orcid.py`), automated GitHub Actions, and workflow configurations (`.yml`).
+3. **Code:** Custom JavaScript, Python scripts ('.py'), automated GitHub Actions, and workflow configurations ('.yml').
 4. **Styling:** Custom CSS modifications tailored specifically for this project.
 5. **Design:** New page layouts, structures, and custom features layered on top of the original template.
 
@@ -59,7 +59,7 @@ The website background image is licensed separately from the source code and tem
 
 > [!IMPORTANT]
 > **UNAUTHORIZED AI/ML USAGE PROHIBITED.**  
-> Subject to the underlying licenses granted above, the Author(s) explicitly reserve all rights regarding the text, code, documentation, and data within this repository (the "Content"). 
+> Subject to the underlying licenses granted above, the Author explicitly reserve all rights regarding the text, code, documentation, and data within this repository (the "Content"). 
 
 ### 1. Prohibition of Use in AI/ML Models
 The Content shall not be reproduced, scraped, indexed, or used in any manner for:
@@ -80,4 +80,4 @@ Any automated processing, aggregation, or indexing of this Content by bots, spid
 ## ⚠️ Disclaimer of Warranty
 
 > [!WARNING]
-> THE SOFTWARE AND CONTENT IN THIS REPOSITORY ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+> THE SOFTWARE AND CONTENT IN THIS REPOSITORY ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
