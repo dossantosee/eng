@@ -1,11 +1,26 @@
 # -------------------------------------------------------------
 # GLOBAL BLOCK
-# Blocks all standard search engines and enforces a delay
-# for any weird engine that ignores Disallow but reads delay.
+# Blocks all standard engines and enforces a delay
 # -------------------------------------------------------------
 User-agent: *
 Disallow: /
+Disallow: /*?search
+Disallow: /search/
+Disallow: /cc/
+Disallow: /*?q=
 Crawl-delay: 14
+
+# -------------------------------------------------------------
+# SPECIFIC ARCHIVAL BOTS
+# -------------------------------------------------------------
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: archive.org_bot
+Disallow: /
+
+User-agent: ia_archiver-web.archive.org
+Disallow: /
 
 # -------------------------------------------------------------
 # EXPLICIT AI, LLM, AND SOCIAL SCRAPER BLOCK
