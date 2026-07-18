@@ -225,6 +225,7 @@ input, select, textarea {
 			overflow-wrap: anywhere;
 			word-break: break-word;
 		}
+
 	h1 {
 		font-size: 2.25rem;
 		line-height: 1.3;
@@ -1710,6 +1711,75 @@ input, select, textarea {
 
 		}
 
+/* Interactive pipe model */
+
+	.pipe-model-container {
+		width: 100%;
+		margin: 1.5rem 0 2rem 0;
+	}
+
+	.pipe-model-container model-viewer {
+		display: block;
+		width: 100%;
+		height: clamp(18rem, 48vw, 26rem);
+		background: transparent;
+		border: 0;
+		outline: 0;
+		cursor: grab;
+		--progress-bar-color: #FFA500;
+		--progress-bar-height: 3px;
+	}
+
+	.pipe-model-container model-viewer:active {
+		cursor: grabbing;
+	}
+
+	.pipe-model-container model-viewer:focus-visible {
+		outline: 2px solid #FFA500;
+		outline-offset: 0.25rem;
+	}
+
+	.pipe-model-help {
+		margin: 0.5rem 0 0 0;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 0.7rem;
+		letter-spacing: 0.08rem;
+		line-height: 1.5;
+		text-align: center;
+		text-transform: none;
+	}
+
+	.pipe-model-help-title {
+		color: #FFA500;
+		font-size: inherit;
+		font-weight: inherit;
+		letter-spacing: inherit;
+	}
+
+
+	.pipe-model-fallback {
+		display: none;
+		padding: 2rem;
+		text-align: center;
+	}
+
+	.pipe-model-container model-viewer:not(:defined) .pipe-model-fallback {
+		display: block;
+	}
+
+	@media screen and (max-width: 480px) {
+
+		.pipe-model-container model-viewer {
+			height: clamp(15rem, 85vw, 20rem);
+		}
+
+		.pipe-model-help {
+			font-size: 0.6rem;
+			letter-spacing: 0.05rem;
+		}
+
+	}
+
 /* Footer */
 
 	#footer {
@@ -1754,12 +1824,3 @@ input, select, textarea {
 			filter: blur(0.1rem);
 			opacity: 0;
 		}
-
-
-
-
-
-
-
-
-
