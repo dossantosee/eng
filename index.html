@@ -796,27 +796,28 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						}
 
 						model.addEventListener('pointerdown', function (event) {
+							// Real mobile browsers may fire both pointer and touch events.
+							// Ignore touch pointers here so touch logic is handled only in touch* handlers.
+							if (event.pointerType === 'touch') return;
 							if (event.pointerType === 'mouse' && event.button !== 0) return;
-							if (event.pointerType === 'touch' && isDoubleTap(event.clientX, event.clientY)) {
-								resetModelView();
-								event.preventDefault();
-								return;
-							}
 							startDrag(event.clientX, event.clientY, 'pointer', event.pointerId);
 							event.preventDefault();
 						});
 
 						model.addEventListener('pointermove', function (event) {
+							if (event.pointerType === 'touch') return;
 							moveDrag(event.clientX, event.clientY, 'pointer');
 							if (state.dragging) {
 								event.preventDefault();
 							}
 						});
 
-						model.addEventListener('pointerup', function () {
+						model.addEventListener('pointerup', function (event) {
+							if (event.pointerType === 'touch') return;
 							endDrag('pointer');
 						});
-						model.addEventListener('pointercancel', function () {
+						model.addEventListener('pointercancel', function (event) {
+							if (event.pointerType === 'touch') return;
 							endDrag('pointer');
 						});
 
