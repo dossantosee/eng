@@ -10,12 +10,9 @@
 		<link rel="icon" type="image/png" href="images/favicon.png" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-
-		<!-- MAXIMUM PRIVACY TAG TO BLOCK SEARCH ENGINES AND ARCHIVES -->
-		<meta name="robots" content="noindex, nofollow, noarchive" />
-		
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 	</head>
 	<body class="is-preload">
 
@@ -67,6 +64,25 @@
 						<article id="about">
 <h2 class="major" data-en="Research" data-pt="Pesquisa">Research</h2>
 								<p id="scopus-profile" style="text-align:justify;" data-en="Dr. Dos Santos balances an established professional career with independent, self-funded academic research. His scholarly profile includes 0 Scopus-indexed publications, 0 citations across 0 citing documents, and an h-index of 0." data-pt="Dr. Dos Santos concilia uma sólida carreira profissional com pesquisas acadêmicas independentes, financiadas com recursos próprios. Seu perfil na base de dados Scopus reúne 0 publicações indexadas, 0 citações provenientes de 0 documentos citantes e um índice h de 0.">Dr. Dos Santos balances an established professional career with independent, self-funded academic research. His scholarly profile includes 0 Scopus-indexed publications, 0 citations across 0 citing documents, and an h-index of 0.</p>
+						<div class="pipe-model-container">
+							<model-viewer
+								id="pipe-model"
+								src="images/pipe.glb"
+								alt="Interactive 3D model of a pipe conveyor"
+								touch-action="none"
+								interaction-prompt="none"
+								camera-orbit="180deg 0deg auto"
+								min-field-of-view="15deg"
+								max-field-of-view="75deg"
+								environment-image="neutral"
+								shadow-intensity="1.05"
+								shadow-softness="1.0"
+								exposure="1.08"
+								loading="lazy">
+								<p class="pipe-model-fallback">Your browser does not support this interactive 3D viewer. <a href="images/pipe.glb">Download the 3D model</a>.</p>
+							</model-viewer>
+							<p class="pipe-model-help" data-en="<span class='pipe-model-help-title'>Digital twin for belt rotation monitoring in pipe conveyors</span><br/>Drag or use the arrow keys to navigate. Double-click to reset" data-pt="<span class='pipe-model-help-title'>Digital twin for belt rotation monitoring in pipe conveyors</span><br/>Drag or use the arrow keys to navigate. Double-click to reset"><span class='pipe-model-help-title'>Digital twin for belt rotation monitoring in pipe conveyors</span><br/>Drag or use the arrow keys to navigate. Double-click to reset</p>
+						</div>
 						<div id="publications-section" data-en="Loading publications..." data-pt="Carregando publicações...">Loading publications...</div>
 						<div id="patents-section" data-en="Loading pending patents..." data-pt="Carregando patentes pendentes...">Loading pending patents...</div>
 						<div id="programs-section" data-en="Loading computer programs..." data-pt="Carregando programas de computador...">Loading computer programs...</div>
@@ -572,6 +588,348 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 				}
 
 						loadResearchProfile();
+
+					function initPipeModelControls() {
+						var model = document.getElementById('pipe-model');
+						if (!model) return;
+
+						var aboutArticle = document.getElementById('about');
+						var state = {
+							yaw: 0,
+							pitch: 0,
+							distance: 100,
+							cameraTarget: null,
+							dragging: false,
+							activeSource: null,
+							pinching: false,
+							lastPinchDistance: 0,
+							lastTapTime: 0,
+							lastTapX: 0,
+							lastTapY: 0,
+							lastX: 0,
+							lastY: 0
+						};
+
+						function clamp(value, min, max) {
+							return Math.min(max, Math.max(min, value));
+						}
+
+						function normalizeAngle(value) {
+							var v = value;
+							while (v > 180) v -= 360;
+							while (v < -180) v += 360;
+							return v;
+						}
+
+						function isAboutActive() {
+							return !!(aboutArticle && aboutArticle.classList.contains('active'));
+						}
+
+						function applyModelTransform() {
+							model.setAttribute('orientation', state.pitch.toFixed(2) + 'deg ' + state.yaw.toFixed(2) + 'deg 0deg');
+							model.setAttribute('camera-orbit', '180deg 0deg ' + state.distance.toFixed(1) + '%');
+							if (state.cameraTarget) {
+								model.setAttribute(
+									'camera-target',
+									state.cameraTarget.x.toFixed(4) + 'm ' + state.cameraTarget.y.toFixed(4) + 'm ' + state.cameraTarget.z.toFixed(4) + 'm'
+								);
+							} else {
+								model.setAttribute('camera-target', 'auto auto auto');
+							}
+						}
+
+						applyModelTransform();
+
+						function applySoftMetalLook() {
+							if (!model.model || !model.model.materials) {
+								return;
+							}
+
+							model.model.materials.forEach(function (material) {
+								var pbr = material && material.pbrMetallicRoughness;
+								if (!pbr) {
+									return;
+								}
+
+								// Keep the original color scheme, only enhance metallic appearance
+								if (typeof pbr.setMetallicFactor === 'function') {
+									pbr.setMetallicFactor(0.65);
+								}
+								if (typeof pbr.setRoughnessFactor === 'function') {
+									pbr.setRoughnessFactor(0.38);
+								}
+							});
+						}
+
+						applySoftMetalLook();
+
+						model.addEventListener('load', function () {
+							applySoftMetalLook();
+							applyModelTransform();
+						});
+
+						function resetModelView() {
+							state.yaw = 0;
+							state.pitch = 0;
+							state.distance = 100;
+							state.cameraTarget = null;
+							state.dragging = false;
+							state.activeSource = null;
+							state.pinching = false;
+							state.lastPinchDistance = 0;
+							applyModelTransform();
+						}
+
+						function isDoubleTap(clientX, clientY) {
+							var now = Date.now();
+							var deltaTime = now - state.lastTapTime;
+							var dx = clientX - state.lastTapX;
+							var dy = clientY - state.lastTapY;
+							var closeEnough = Math.sqrt(dx * dx + dy * dy) < 24;
+
+							state.lastTapTime = now;
+							state.lastTapX = clientX;
+							state.lastTapY = clientY;
+
+							return deltaTime > 0 && deltaTime < 320 && closeEnough;
+						}
+
+						function setPivotFromPoint(clientX, clientY) {
+							if (typeof model.positionAndNormalFromPoint !== 'function') {
+								return;
+							}
+							var rect = model.getBoundingClientRect();
+							var hit = model.positionAndNormalFromPoint(clientX - rect.left, clientY - rect.top);
+							if (!hit || !hit.position) {
+								return;
+							}
+							state.cameraTarget = {
+								x: hit.position.x,
+								y: hit.position.y,
+								z: hit.position.z
+							};
+							applyModelTransform();
+						}
+
+						function startDrag(clientX, clientY, source, pointerId) {
+							if (state.pinching) {
+								return;
+							}
+							if (state.dragging && state.activeSource !== source) {
+								return;
+							}
+							setPivotFromPoint(clientX, clientY);
+							state.dragging = true;
+							state.activeSource = source;
+							state.lastX = clientX;
+							state.lastY = clientY;
+							if (pointerId != null && typeof model.setPointerCapture === 'function') {
+								try {
+									model.setPointerCapture(pointerId);
+								} catch (error) {
+									// Ignore pointer capture issues on some mobile/browser combinations
+								}
+							}
+						}
+
+						function moveDrag(clientX, clientY, source) {
+							if (state.pinching) {
+								return;
+							}
+							if (!state.dragging || state.activeSource !== source) {
+								return;
+							}
+
+							var dx = clientX - state.lastX;
+							var dy = clientY - state.lastY;
+							state.lastX = clientX;
+							state.lastY = clientY;
+
+							var dragSensitivity = 0.3;
+							state.pitch = clamp(state.pitch + dx * dragSensitivity, -85, 85);
+							state.yaw = normalizeAngle(state.yaw - dy * dragSensitivity);
+
+							applyModelTransform();
+						}
+
+						function endDrag(source) {
+							if (!state.dragging) {
+								return;
+							}
+							if (source && state.activeSource && source !== state.activeSource) {
+								return;
+							}
+							state.dragging = false;
+							state.activeSource = null;
+						}
+
+						function getTouchDistance(touchA, touchB) {
+							var dx = touchA.clientX - touchB.clientX;
+							var dy = touchA.clientY - touchB.clientY;
+							return Math.sqrt(dx * dx + dy * dy);
+						}
+
+						function beginPinch(touchA, touchB) {
+							state.pinching = true;
+							state.lastPinchDistance = getTouchDistance(touchA, touchB);
+							endDrag();
+						}
+
+						function updatePinch(touchA, touchB) {
+							if (!state.pinching) {
+								beginPinch(touchA, touchB);
+								return;
+							}
+							var currentDistance = getTouchDistance(touchA, touchB);
+							if (state.lastPinchDistance > 0) {
+								var delta = currentDistance - state.lastPinchDistance;
+								var pinchSensitivity = 0.35;
+								state.distance = clamp(state.distance - delta * pinchSensitivity, 55, 220);
+								applyModelTransform();
+							}
+							state.lastPinchDistance = currentDistance;
+						}
+
+						function endPinch() {
+							state.pinching = false;
+							state.lastPinchDistance = 0;
+						}
+
+						model.addEventListener('pointerdown', function (event) {
+							if (event.pointerType === 'mouse' && event.button !== 0) return;
+							if (event.pointerType === 'touch' && isDoubleTap(event.clientX, event.clientY)) {
+								resetModelView();
+								event.preventDefault();
+								return;
+							}
+							startDrag(event.clientX, event.clientY, 'pointer', event.pointerId);
+							event.preventDefault();
+						});
+
+						model.addEventListener('pointermove', function (event) {
+							moveDrag(event.clientX, event.clientY, 'pointer');
+							if (state.dragging) {
+								event.preventDefault();
+							}
+						});
+
+						model.addEventListener('pointerup', function () {
+							endDrag('pointer');
+						});
+						model.addEventListener('pointercancel', function () {
+							endDrag('pointer');
+						});
+
+						// Touch fallback for mobile/browser combinations where pointer events are inconsistent
+						model.addEventListener('touchstart', function (event) {
+							var touches = event.touches;
+							if (!touches || !touches.length) return;
+							if (touches.length >= 2) {
+								beginPinch(touches[0], touches[1]);
+								event.preventDefault();
+								return;
+							}
+							var touch = touches[0];
+							if (isDoubleTap(touch.clientX, touch.clientY)) {
+								resetModelView();
+								event.preventDefault();
+								return;
+							}
+							endPinch();
+							startDrag(touch.clientX, touch.clientY, 'touch', null);
+							event.preventDefault();
+						}, { passive: false });
+
+						model.addEventListener('dblclick', function (event) {
+							resetModelView();
+							event.preventDefault();
+						});
+
+						model.addEventListener('touchmove', function (event) {
+							var touches = event.touches;
+							if (!touches || !touches.length) return;
+							if (touches.length >= 2) {
+								updatePinch(touches[0], touches[1]);
+								event.preventDefault();
+								return;
+							}
+							endPinch();
+							var touch = touches[0];
+							moveDrag(touch.clientX, touch.clientY, 'touch');
+							event.preventDefault();
+						}, { passive: false });
+
+						model.addEventListener('touchend', function (event) {
+							var touches = event.touches;
+							if (touches && touches.length >= 2) {
+								beginPinch(touches[0], touches[1]);
+								event.preventDefault();
+								return;
+							}
+							if (touches && touches.length === 1) {
+								endPinch();
+								startDrag(touches[0].clientX, touches[0].clientY, 'touch', null);
+								event.preventDefault();
+								return;
+							}
+							endPinch();
+							endDrag('touch');
+						}, { passive: false });
+						model.addEventListener('touchcancel', function () {
+							endPinch();
+							endDrag('touch');
+						}, { passive: false });
+
+						model.addEventListener('wheel', function (event) {
+							state.distance = clamp(state.distance + (event.deltaY > 0 ? 6 : -6), 55, 220);
+							applyModelTransform();
+							event.preventDefault();
+						}, { passive: false });
+
+						document.addEventListener('keydown', function (event) {
+							var target = event.target;
+							if (target && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/i.test(target.tagName)) {
+								return;
+							}
+							if (!isAboutActive()) {
+								return;
+							}
+
+							var step = event.shiftKey ? 4 : 2;
+							var handled = true;
+
+							switch (event.key) {
+								case 'ArrowLeft':
+									state.pitch = clamp(state.pitch - step, -85, 85);
+									break;
+								case 'ArrowRight':
+									state.pitch = clamp(state.pitch + step, -85, 85);
+									break;
+								case 'ArrowUp':
+									state.yaw = normalizeAngle(state.yaw + step);
+									break;
+								case 'ArrowDown':
+									state.yaw = normalizeAngle(state.yaw - step);
+									break;
+								case '+':
+								case '=':
+									state.distance = clamp(state.distance - 6, 55, 220);
+									break;
+								case '-':
+								case '_':
+									state.distance = clamp(state.distance + 6, 55, 220);
+									break;
+								default:
+									handled = false;
+							}
+
+							if (!handled) return;
+							applyModelTransform();
+							event.preventDefault();
+						});
+					}
+
+					initPipeModelControls();
 
 					function updateProfessionalYears() {
 						var el = document.getElementById('professional-years');
