@@ -594,10 +594,15 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						if (!model) return;
 
 						var aboutArticle = document.getElementById('about');
-						var state = {
+						var defaultView = {
 							yaw: 0,
 							pitch: 0,
-							distance: 100,
+							distance: 100
+						};
+						var state = {
+							yaw: defaultView.yaw,
+							pitch: defaultView.pitch,
+							distance: defaultView.distance,
 							cameraTarget: null,
 							dragging: false,
 							activeSource: null,
@@ -625,9 +630,14 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 							return !!(aboutArticle && aboutArticle.classList.contains('active'));
 						}
 
+						function applyDefaultViewState() {
+							state.yaw = defaultView.yaw;
+							state.pitch = defaultView.pitch;
+							state.distance = defaultView.distance;
+							state.cameraTarget = null;
+						}
+
 						function applyModelTransform() {
-							model.setAttribute('orientation', state.pitch.toFixed(2) + 'deg ' + state.yaw.toFixed(2) + 'deg 0deg');
-							model.setAttribute('camera-orbit', '180deg 0deg ' + state.distance.toFixed(1) + '%');
 							if (state.cameraTarget) {
 								model.setAttribute(
 									'camera-target',
@@ -636,6 +646,8 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 							} else {
 								model.setAttribute('camera-target', 'auto auto auto');
 							}
+							model.setAttribute('orientation', state.pitch.toFixed(2) + 'deg ' + state.yaw.toFixed(2) + 'deg 0deg');
+							model.setAttribute('camera-orbit', '180deg 0deg ' + state.distance.toFixed(1) + '%');
 						}
 
 						applyModelTransform();
@@ -664,20 +676,27 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						applySoftMetalLook();
 
 						model.addEventListener('load', function () {
+							applyDefaultViewState();
 							applySoftMetalLook();
 							applyModelTransform();
 						});
 
 						function resetModelView() {
-							state.yaw = 0;
-							state.pitch = 0;
-							state.distance = 100;
-							state.cameraTarget = null;
+							applyDefaultViewState();
 							state.dragging = false;
 							state.activeSource = null;
 							state.pinching = false;
 							state.lastPinchDistance = 0;
 							applyModelTransform();
+							if (typeof model.jumpCameraToGoal === 'function') {
+								model.jumpCameraToGoal();
+							}
+							requestAnimationFrame(function () {
+								applyModelTransform();
+								if (typeof model.jumpCameraToGoal === 'function') {
+									model.jumpCameraToGoal();
+								}
+							});
 						}
 
 						function isDoubleTap(clientX, clientY) {
