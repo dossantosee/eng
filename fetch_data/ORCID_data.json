@@ -132,10 +132,10 @@
       "URL": "https://www.utfpr.edu.br/"
     },
     {
-      "institution": "UFPA: Belém, Pará, BR",
+      "institution": "Universidade Federal do Pará: Belém, Pará, BR",
       "department": "The Natural Resources Engineering of the Amazon Graduate Program (PRODERNA)",
       "degree": "Doctor of Philosophy (Ph.D.)",
-      "title": "Process Engineering",
+      "title": "Natural Resources Engineering",
       "start": "2022",
       "end": "2026",
       "URL": "https://ufpa.br/"
@@ -377,5 +377,5 @@
       "description": "expand_less Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering. (1)"
     }
   ],
-  "refreshed": "2026-08-02 13:17:56 UTC"
+  "refreshed": "2026-08-08 13:25:02 UTC"
 }
