@@ -266,23 +266,31 @@ def translate_title(text: str, source: str = "pt", target: str = "en") -> str:
     return ""  # unreachable, kept for clarity
 
 
-def add_translations(records: list) -> list:
-    """
-    Insert 'title_en' right after 'title' for every record, keeping
-    the original key order/approach for everything else intact.
-    """
+def add_translations(records: list, existing_data: list = None) -> list:
+    # Reuse earlier translations if the pt-BR title hasn't changed
+    cache = {
+        item["application"]: item
+        for item in (existing_data or [])
+        if isinstance(item, dict) and item.get("title_en")
+    }
+
     translated = []
     total = len(records)
     for i, record in enumerate(records, 1):
-        print(f"  Translating title {i}/{total}...")
-        title_en = translate_title(record.get("title", ""))
+        prev = cache.get(record.get("application"))
+        if prev and prev.get("title") == record.get("title"):
+            title_en = prev["title_en"]
+        else:
+            print(f"  Translating title {i}/{total}...")
+            title_en = translate_title(record.get("title", ""))
 
         new_record = {}
         for key, value in record.items():
+            if key == "title_en":
+                continue
             new_record[key] = value
             if key == "title":
                 new_record["title_en"] = title_en
-        # Fallback in case 'title' key was ever missing
         if "title_en" not in new_record:
             new_record["title_en"] = title_en
 
@@ -314,11 +322,45 @@ if __name__ == "__main__":
     query = os.environ.get("USERNUMBER", "")
     if not query:
         print("Warning: USERNUMBER environment variable is not set. Exiting.")
-        # Exit 0 so the workflow does not fail
         exit(0)
 
-    # ── Always load what is already on disk first ─────────────────────────────
     existing_data = load_existing_data(DATA_FILE)
+
+    def save(data):
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+
+    new_results = []
+    try:
+        session = create_session()
+        new_results = fetch_all_results(
+            session,
+            query=query,
+            column="CpfCnpjAutorPrograma",
+            forma="todasPalavras",
+            per_page=20
+        )
+    except Exception as exc:
+        print(f"\n⚠️  Fetch failed: {exc}")
+
+    if not new_results:
+        print("\n⚠️  No new data from INPI. Keeping existing records, "
+              "filling in any missing translations.")
+        if existing_data:
+            filled = add_translations(existing_data, existing_data)
+            if filled != existing_data:
+                save(filled)
+                print("  Saved existing data with updated translations.")
+        exit(0)
+
+    stamped_results = merge_refresh_timestamps(new_results, existing_data)
+
+    print("\nTranslating titles to English...")
+    stamped_results = add_translations(stamped_results, existing_data)
+
+    print_results(stamped_results)
+    save(stamped_results)
+    print(f"\n✅  Successfully saved {len(stamped_results)} records to '{DATA_FILE}'.")
 
     # ── Attempt the fetch — catch every possible error gracefully ─────────────
     try:
