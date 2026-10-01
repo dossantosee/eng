@@ -2,7 +2,7 @@ name: Update Programs Data
 
 on:
   schedule:
-    - cron: '0 13 * * *'
+    - cron: '0 13 1 * *'   # 13:00 UTC on the 1st of every month
   workflow_dispatch:
 
 permissions:
