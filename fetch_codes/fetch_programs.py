@@ -239,31 +239,39 @@ def _throttle():
     _last_call_time[0] = time.monotonic()
 
 
+def _translate_mymemory(text: str) -> str:
+    """Fallback translator (free, no key). Returns '' on failure."""
+    try:
+        r = requests.get(
+            "https://api.mymemory.translated.net/get",
+            params={"q": text, "langpair": "pt|en"},
+            timeout=20,
+        )
+        r.raise_for_status()
+        data = r.json()
+        if str(data.get("responseStatus")) == "200":
+            return (data["responseData"].get("translatedText") or "").strip()
+        print(f"  ⚠️  MyMemory error: {data.get('responseDetails')}")
+    except Exception as exc:
+        print(f"  ⚠️  MyMemory failed: {exc}")
+    return ""
+
+
 def translate_title(text: str, source: str = "pt", target: str = "en") -> str:
-    """
-    Translate a single title, one request at a time, throttled to stay
-    under Google's rate limit. Retries with exponential backoff on
-    transient errors (e.g. "too many requests"). Returns an empty string
-    only if every attempt fails, so a hiccup never breaks the save step.
-    """
     if not text:
         return ""
 
-    for attempt in range(1, _MAX_RETRIES + 1):
-        _throttle()
-        try:
-            return GoogleTranslator(source=source, target=target).translate(text)
-        except Exception as exc:
-            is_last_attempt = attempt == _MAX_RETRIES
-            if is_last_attempt:
-                print(f"  ⚠️  Translation failed for '{text[:60]}...': {exc}")
-                return ""
-            backoff = 2 ** attempt  # 2s, 4s, 8s, 16s
-            print(f"  ⚠️  Attempt {attempt}/{_MAX_RETRIES} failed "
-                  f"({exc}). Retrying in {backoff}s...")
-            time.sleep(backoff)
+    # 1) Try Google once (no long retry loop, since a blocked IP won't recover in seconds)
+    _throttle()
+    try:
+        result = GoogleTranslator(source=source, target=target).translate(text)
+        if result:
+            return result
+    except Exception as exc:
+        print(f"  ⚠️  Google failed ({str(exc)[:60]}...). Trying MyMemory.")
 
-    return ""  # unreachable, kept for clarity
+    # 2) Fallback
+    return _translate_mymemory(text)
 
 
 def add_translations(records: list, existing_data: list = None) -> list:
