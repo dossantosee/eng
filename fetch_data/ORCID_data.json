@@ -242,6 +242,15 @@
       "URL": "https://www.credly.com/badges/197a3a66-f0ea-462d-a896-b3bfaf361b39"
     },
     {
+      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
+      "department": "",
+      "degree": "CMM - Certified Maintenance Manager",
+      "title": "Credential 192041",
+      "start": "2020",
+      "end": "2029",
+      "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
+    },
+    {
       "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
       "department": "",
       "degree": "CSAM - Certified Senior Practitioner in Asset Management",
@@ -294,15 +303,6 @@
       "start": "2012",
       "end": "2027",
       "URL": "https://www.credly.com/badges/68b412e7-5ce0-475a-a44a-ec298352b60e/public_url"
-    },
-    {
-      "institution": "The Association of Asset Management Professionals (AMP): Fort Myers, Florida, US",
-      "department": "",
-      "degree": "CMM - Certified Maintenance Manager",
-      "title": "Credential 192041",
-      "start": "2020",
-      "end": "2026",
-      "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
     }
   ],
   "Works": [
@@ -377,5 +377,5 @@
       "description": "expand_less Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering. (1)"
     }
   ],
-  "refreshed": "2026-09-27 16:26:36 UTC"
+  "refreshed": "2026-10-04 16:28:47 UTC"
 }
