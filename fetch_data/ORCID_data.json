@@ -251,6 +251,15 @@
       "URL": "https://www.credly.com/badges/fa99a4ed-2c3f-4991-b08e-c824e63e5c49"
     },
     {
+      "institution": "The World Partners in Asset Management (WPiAM): Toronto, Ontario, CA",
+      "department": "",
+      "degree": "CAMA - Certified Asset Management Assessor",
+      "title": "Credential 15192",
+      "start": "2014",
+      "end": "2029",
+      "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
+    },
+    {
       "institution": "The Asset Management Council (AMCouncil): Melbourne, Victoria, AU",
       "department": "",
       "degree": "CSAM - Certified Senior Practitioner in Asset Management",
@@ -285,15 +294,6 @@
       "start": "2017",
       "end": "2027",
       "URL": "https://badgr.com/public/assertions/PTAMPz6sS0GHaDlbjNngBQ?identity__email=dossantosee@gmail.com"
-    },
-    {
-      "institution": "The World Partners in Asset Management (WPiAM): Toronto, Ontario, CA",
-      "department": "",
-      "degree": "CAMA - Certified Asset Management Assessor",
-      "title": "Credential 74",
-      "start": "2014",
-      "end": "2027",
-      "URL": "https://www.wpiam.com/en_uk/member_directory/leonardo-dos-santos/"
     },
     {
       "institution": "The Society for Maintenance and Reliability Professionals (SMRP): Atlanta, Georgia, US",
@@ -377,5 +377,5 @@
       "description": "expand_less Review activity for Journal of the Brazilian Society of Mechanical Sciences and Engineering. (1)"
     }
   ],
-  "refreshed": "2026-10-25 15:42:47 UTC"
+  "refreshed": "2026-11-01 17:39:47 UTC"
 }
